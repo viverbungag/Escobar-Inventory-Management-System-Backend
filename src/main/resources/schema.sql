@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS supplier(
     supplier_address VARCHAR(255),
     supplier_contact_number VARCHAR(255),
     supplier_contact_person VARCHAR(255),
+    active BOOLEAN DEFAULT true,
     PRIMARY KEY (supplier_id)
 );
 

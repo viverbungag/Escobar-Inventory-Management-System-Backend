@@ -8,4 +8,18 @@ import java.util.List;
 public interface SupplierDao {
 
     List<Supplier> getAllSuppliers();
+
+    void insertSuppliers(String supplierName,
+                         String supplierAddress,
+                         String supplierContactNumber,
+                         String supplierContactPerson,
+                         Boolean active);
+
+    void updateSupplier(
+            String supplierName,
+            String supplierAddress,
+            String supplierContactNumber,
+            String supplierContactPerson,
+            Boolean active,
+            Long id);
 }

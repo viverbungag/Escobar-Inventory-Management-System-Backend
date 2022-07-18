@@ -1,0 +1,17 @@
+package com.exe.escobar.IMSBackend.Supplier;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+@Setter
+public class SupplierDto {
+
+    private String supplierName;
+    private String supplierAddress;
+    private String supplierContactNumber;
+    private String supplierContactPerson;
+    private Boolean active;
+}

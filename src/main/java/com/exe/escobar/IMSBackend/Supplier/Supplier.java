@@ -11,6 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -23,15 +24,23 @@ public class Supplier {
     @Column(name = "supplier_id")
     private Long supplierId;
 
+    @NonNull
     @Column(name = "supplier_name")
     private String supplierName;
 
+    @NonNull
     @Column(name = "supplier_address")
     private String supplierAddress;
 
+    @NonNull
     @Column(name = "supplier_contact_number")
     private String supplierContactNumber;
 
+    @NonNull
     @Column(name = "supplier_contact_person")
     private String supplierContactPerson;
+
+    @NonNull
+    @Column(name = "active")
+    private Boolean active;
 }
