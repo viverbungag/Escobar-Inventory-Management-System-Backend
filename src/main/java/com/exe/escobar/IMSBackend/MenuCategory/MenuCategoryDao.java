@@ -9,4 +9,5 @@ public interface MenuCategoryDao {
 
     public List<MenuCategory> getAllMenuCategories();
 
+    void insertMenuCategory(String menuCategoryName, Boolean active);
 }

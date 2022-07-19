@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository("supplier_mysql")
@@ -25,27 +26,19 @@ public interface SupplierRepository extends SupplierDao, JpaRepository<Supplier,
             "(supplier_name, supplier_address, supplier_contact_number, supplier_contact_person, active) " +
             "VALUES (:supplierName, :supplierAddress, :supplierContactNumber, :supplierContactPerson, :active)",
             nativeQuery = true)
-    void insertSuppliers(@Param("supplierName") String supplierName,
-                         @Param("supplierAddress") String supplierAddress,
-                         @Param("supplierContactNumber") String supplierContactNumber,
-                         @Param("supplierContactPerson") String supplierContactPerson,
-                         @Param("active") Boolean active);
-
-    @Modifying
-    @Query(value = "UPDATE #{#entityName} " +
-            "SET supplier_name = :supplierName, " +
-                "supplier_address = :supplierAddress, " +
-                "supplier_contact_number = :supplierContactNumber, " +
-                "supplier_contact_person = :supplierContactPerson, " +
-                "active = :active " +
-            "WHERE supplier_id = :supplierId",
-            nativeQuery = true)
-    void updateSupplier(@Param("supplierName") String supplierName,
+    void insertSupplier(@Param("supplierName") String supplierName,
                         @Param("supplierAddress") String supplierAddress,
                         @Param("supplierContactNumber") String supplierContactNumber,
                         @Param("supplierContactPerson") String supplierContactPerson,
-                        @Param("active") Boolean active,
-                        @Param("supplierId") Long id);
+                        @Param("active") Boolean active);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE supplier_id = :supplierId",
+            nativeQuery = true)
+    Optional<Supplier> getSupplierById(@Param("supplierId") Long supplierId);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE supplier_name = :supplierName",
+            nativeQuery = true)
+    Optional<Supplier> getSupplierByName(@Param("supplierName") String supplierName);
 
 
 

@@ -32,4 +32,11 @@ public class MenuCategoryService {
                 .map((MenuCategory menuCategory)-> convertEntityToDto(menuCategory))
                 .collect(Collectors.toList());
     }
+
+    public void addMenuCategory(MenuCategory menuCategory) {
+        menuCategoryRepository.insertMenuCategory(
+                menuCategory.getMenuCategoryName(),
+                menuCategory.getActive()
+        );
+    }
 }
