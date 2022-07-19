@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class SupplierDto {
 
+    private Long supplierId;
     private String supplierName;
     private String supplierAddress;
     private String supplierContactNumber;

@@ -15,8 +15,13 @@ public class SupplierController {
     SupplierService supplierService;
 
     @GetMapping
-    public List<Supplier> getAllSuppliers(){
+    public List<SupplierDto> getAllSuppliers(){
         return supplierService.getAllSuppliers();
+    }
+
+    @GetMapping("/active")
+    public List<SupplierDto> getAllActiveSuppliers(){
+        return supplierService.getAllActiveSuppliers();
     }
 
     @PostMapping("/add")

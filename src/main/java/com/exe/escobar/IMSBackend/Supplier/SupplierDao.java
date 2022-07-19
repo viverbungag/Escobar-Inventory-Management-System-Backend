@@ -22,4 +22,6 @@ public interface SupplierDao {
             String supplierContactPerson,
             Boolean active,
             Long id);
+
+    List<Supplier> getAllActiveSuppliers();
 }

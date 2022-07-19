@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -16,9 +17,23 @@ public class SupplierService {
     @Qualifier("supplier_mysql")
     SupplierDao supplierRepository;
 
+    private SupplierDto convertEntityToDto(Supplier supplier){
+        return new SupplierDto(
+                supplier.getSupplierId(),
+                supplier.getSupplierName(),
+                supplier.getSupplierAddress(),
+                supplier.getSupplierContactNumber(),
+                supplier.getSupplierContactPerson(),
+                supplier.getActive());
+    }
 
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.getAllSuppliers();
+
+    public List<SupplierDto> getAllSuppliers() {
+        return supplierRepository
+                .getAllSuppliers()
+                .stream()
+                .map((Supplier supplier)-> convertEntityToDto(supplier))
+                .collect(Collectors.toList());
     }
 
     public void addSupplier(SupplierDto supplierDto) {
@@ -40,5 +55,12 @@ public class SupplierService {
                 supplierDto.getSupplierContactPerson(),
                 supplierDto.getActive(),
                 id);
+    }
+
+    public List<SupplierDto> getAllActiveSuppliers() {
+        return supplierRepository.getAllActiveSuppliers()
+                .stream()
+                .map((Supplier supplier)-> convertEntityToDto(supplier))
+                .collect(Collectors.toList());
     }
 }

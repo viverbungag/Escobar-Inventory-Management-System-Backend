@@ -12,9 +12,13 @@ import java.util.List;
 @Repository("supplier_mysql")
 public interface SupplierRepository extends SupplierDao, JpaRepository<Supplier, Long> {
 
-    @Query(value = "SELECT * FROM #{#entityName} WHERE active = true",
+    @Query(value = "SELECT * FROM #{#entityName}",
             nativeQuery = true)
     List<Supplier> getAllSuppliers();
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE active = true",
+            nativeQuery = true)
+    List<Supplier> getAllActiveSuppliers();
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +

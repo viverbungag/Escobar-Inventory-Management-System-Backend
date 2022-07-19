@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS account(
 CREATE TABLE IF NOT EXISTS menu_category(
     menu_category_id BIGINT NOT NULL AUTO_INCREMENT,
     menu_category_name VARCHAR(255) NOT NULL,
+    active BOOLEAN DEFAULT true,
     PRIMARY KEY (menu_category_id)
 );
 
