@@ -83,6 +83,7 @@ public class SupplierService {
             if (supplierOptional.isPresent()){
                 throw new SupplierNameIsExistingException(name);
             }
+
             supplier.setSupplierName(name);
         }
 

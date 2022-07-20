@@ -18,8 +18,13 @@ public class MenuCategoryController {
     }
 
     @PostMapping("/add")
-    public void addMenuCategory(@RequestBody MenuCategory menuCategory){
-        menuCategoryService.addMenuCategory(menuCategory);
+    public void addMenuCategory(@RequestBody MenuCategoryDto menuCategoryDto){
+        menuCategoryService.addMenuCategory(menuCategoryDto);
+    }
+
+    @PutMapping("/update/{id}")
+    public void updateMenuCategory(@RequestBody MenuCategoryDto menuCategoryDto, @PathVariable Long id){
+        menuCategoryService.updateMenuCategory(menuCategoryDto, id);
     }
 
 }

@@ -15,22 +15,22 @@ INSERT INTO menu_category(menu_category_name, active) VALUES ('Menu Category 14'
 INSERT INTO menu_category(menu_category_name, active) VALUES ('Menu Category 15', true);
 INSERT INTO menu_category(menu_category_name, active) VALUES ('Menu Category 16', true);
 
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 1');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 2');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 3');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 4');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 5');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 6');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 7');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 8');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 9');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 10');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 11');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 12');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 13');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 14');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 15');
-INSERT INTO supply_category(supply_category_name) VALUES ('Supply Category 16');
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 1', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 2', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 3', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 4', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 5', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 6', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 7', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 8', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 9', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 10', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 11', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 12', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 13', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 14', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 15', true);
+INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 16', true);
 
 INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 1', 'UOM 1');
 INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 2', 'UOM 2');

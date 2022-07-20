@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("menuCategory_mysql")
 public interface MenuCategoryRepository extends MenuCategoryDao, JpaRepository<MenuCategory, Long> {
@@ -22,4 +23,14 @@ public interface MenuCategoryRepository extends MenuCategoryDao, JpaRepository<M
             nativeQuery = true)
     void insertMenuCategory(@Param("menuCategoryName") String menuCategoryName,
                             @Param("active") Boolean active);
+
+    @Query(value = "SELECT * FROM #{#entityName} " +
+            "WHERE menu_category_id = :menuCategoryId",
+            nativeQuery = true)
+    Optional<MenuCategory> getMenuCategoryById(@Param("menuCategoryId") Long menuCategoryId);
+
+    @Query(value = "SELECT * FROM #{#entityName} " +
+            "WHERE menu_category_name = :menuCategoryName",
+            nativeQuery = true)
+    Optional<MenuCategory> getMenuCategoryByName(@Param("menuCategoryName") String menuCategoryName);
 }
