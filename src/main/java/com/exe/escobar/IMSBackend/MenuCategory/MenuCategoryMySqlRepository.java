@@ -1,5 +1,7 @@
 package com.exe.escobar.IMSBackend.MenuCategory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +16,7 @@ public interface MenuCategoryMySqlRepository extends MenuCategoryDao, JpaReposit
 
     @Query(value = "SELECT * FROM #{#entityName}",
             nativeQuery = true)
-    public List<MenuCategory> getAllMenuCategories();
+    Page<MenuCategory> getAllMenuCategories(Pageable pageable);
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +

@@ -74,10 +74,10 @@ public class UnitOfMeasurementService {
 
         unitOfMeasurementsWithPageDetails.put("contents",
                 unitOfMeasurementPage
-                .getContent()
-                .stream()
-                .map((UnitOfMeasurement unitOfMeasurement) -> convertEntityToDto(unitOfMeasurement))
-                .collect(Collectors.toList()));
+                        .getContent()
+                        .stream()
+                        .map((UnitOfMeasurement unitOfMeasurement) -> convertEntityToDto(unitOfMeasurement))
+                        .collect(Collectors.toList()));
 
         unitOfMeasurementsWithPageDetails.put("totalPages", totalPages);
 

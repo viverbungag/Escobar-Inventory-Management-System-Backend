@@ -1,9 +1,11 @@
 package com.exe.escobar.IMSBackend.MenuCategory;
 
+import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:8888")
@@ -15,8 +17,8 @@ public class MenuCategoryController {
 
 
     @GetMapping
-    public List<MenuCategoryDto> getAllMenuCategories(){
-        return menuCategoryService.getAllMenuCategories();
+    public Map<String, Object> getAllMenuCategories(@RequestBody PaginationDto paginationDto){
+        return menuCategoryService.getAllMenuCategories(paginationDto);
     }
 
     @PostMapping("/add")

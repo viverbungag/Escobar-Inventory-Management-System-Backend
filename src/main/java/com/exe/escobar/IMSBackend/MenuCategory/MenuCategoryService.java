@@ -3,14 +3,18 @@ package com.exe.escobar.IMSBackend.MenuCategory;
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsExistingException;
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsNullException;
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNotFoundException;
+import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
+import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,12 +32,56 @@ public class MenuCategoryService {
                 menuCategory.getIsActive());
     }
 
-    public List<MenuCategoryDto> getAllMenuCategories() {
-        return menuCategoryRepository
-                .getAllMenuCategories()
-                .stream()
-                .map((MenuCategory menuCategory)-> convertEntityToDto(menuCategory))
-                .collect(Collectors.toList());
+    private Sort getSortingMethod(Boolean isAscending, Sort sort){
+        if (isAscending){
+            return sort.ascending();
+        }
+        return sort.descending();
+    }
+
+    private Sort getSortingValue(String sortedBy){
+
+        switch(sortedBy){
+            case "Name":
+                return Sort.by("menu_category_name");
+            default:
+                return Sort.unsorted();
+        }
+    }
+
+    public Map<String, Object> getAllMenuCategories(PaginationDto paginationDto) {
+        int pageNo = paginationDto.getPageNo();
+        int pageSize = paginationDto.getPageSize();
+        Boolean isAscending = paginationDto.getIsAscending();
+        String sortedBy = paginationDto.getSortedBy();
+
+        Sort sort = getSortingValue(sortedBy);
+        Sort finalSort = getSortingMethod(isAscending, sort);
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
+
+        Page<MenuCategory> menuCategoryPage = menuCategoryRepository
+                .getAllMenuCategories(pageable);
+
+        Integer totalPages = menuCategoryPage.getTotalPages();
+
+        Map<String, Object> menuCategoryWithPageDetails = new HashMap<>();
+
+        menuCategoryWithPageDetails.put("contents",
+                menuCategoryPage
+                        .getContent()
+                        .stream()
+                        .map((MenuCategory menuCategory)-> convertEntityToDto(menuCategory))
+                        .collect(Collectors.toList()));
+
+        menuCategoryWithPageDetails.put("totalPages", totalPages);
+
+        if (pageNo < 1 || pageNo > totalPages){
+            throw new PageOutOfBoundsException(pageNo);
+        }
+
+        return menuCategoryWithPageDetails;
+
     }
 
     public void addMenuCategory(MenuCategoryDto menuCategoryDto) {
