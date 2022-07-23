@@ -10,7 +10,7 @@ public interface SupplyCategoryDao {
 
     public List<SupplyCategory> getAllSupplyCategories();
 
-    void insertSupplyCategory(String supplyCategoryName, Boolean active);
+    void insertSupplyCategory(String supplyCategoryName, Boolean isActive);
 
     Optional<SupplyCategory> getSupplyCategoryById(Long supplyCategoryId);
 

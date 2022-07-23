@@ -3,8 +3,6 @@ package com.exe.escobar.IMSBackend.MenuCategory;
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsExistingException;
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsNullException;
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNotFoundException;
-import com.exe.escobar.IMSBackend.Supplier.Supplier;
-import com.exe.escobar.IMSBackend.Supplier.SupplierDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ public class MenuCategoryService {
         return new MenuCategoryDto(
                 menuCategory.getMenuCategoryId(),
                 menuCategory.getMenuCategoryName(),
-                menuCategory.getActive());
+                menuCategory.getIsActive());
     }
 
     public List<MenuCategoryDto> getAllMenuCategories() {
@@ -50,7 +48,7 @@ public class MenuCategoryService {
 
         menuCategoryRepository.insertMenuCategory(
                 menuCategoryDto.getMenuCategoryName(),
-                menuCategoryDto.getActive()
+                menuCategoryDto.getIsActive()
         );
     }
 
@@ -60,7 +58,7 @@ public class MenuCategoryService {
                 .orElseThrow(() -> new MenuCategoryNotFoundException(id));
 
         String name = menuCategoryDto.getMenuCategoryName();
-        Boolean active = menuCategoryDto.getActive();
+        Boolean active = menuCategoryDto.getIsActive();
 
         if (name == null || name.length() <= 0){
             throw new MenuCategoryNameIsNullException();
@@ -78,6 +76,6 @@ public class MenuCategoryService {
             menuCategory.setMenuCategoryName(name);
         }
 
-        menuCategory.setActive(active);
+        menuCategory.setIsActive(active);
     }
 }

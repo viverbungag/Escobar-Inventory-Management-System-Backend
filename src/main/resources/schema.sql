@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS account(
 CREATE TABLE IF NOT EXISTS menu_category(
     menu_category_id BIGINT NOT NULL AUTO_INCREMENT,
     menu_category_name VARCHAR(255) NOT NULL,
-    active BOOLEAN DEFAULT true,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (menu_category_id)
 );
 
@@ -98,14 +98,14 @@ CREATE TABLE IF NOT EXISTS unit_of_measurement(
     unit_of_measurement_id BIGINT NOT NULL AUTO_INCREMENT,
     unit_of_measurement_name VARCHAR(255) NOT NULL,
     unit_of_measurement_abbreviation VARCHAR(255) NOT NULL,
-    active BOOLEAN DEFAULT true,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (unit_of_measurement_id)
 );
 
 CREATE TABLE IF NOT EXISTS supply_category(
     supply_category_id BIGINT AUTO_INCREMENT,
     supply_category_name VARCHAR(255) NOT NULL,
-    active BOOLEAN DEFAULT true,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (supply_category_id)
 );
 
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS supplier(
     supplier_address VARCHAR(255),
     supplier_contact_number VARCHAR(255),
     supplier_contact_person VARCHAR(255),
-    active BOOLEAN DEFAULT true,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (supplier_id)
 );
 
@@ -128,10 +128,11 @@ CREATE TABLE IF NOT EXISTS supply(
     supply_category_id BIGINT,
     minimum_quantity DECIMAL(10, 2),
     in_minimum_quantity BOOLEAN,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (supply_id),
-    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (unit_of_measurement_id) REFERENCES unit_of_measurement(unit_of_measurement_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (supply_category_id) REFERENCES supply_category(supply_category_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ,
+    FOREIGN KEY (unit_of_measurement_id) REFERENCES unit_of_measurement(unit_of_measurement_id),
+    FOREIGN KEY (supply_category_id) REFERENCES supply_category(supply_category_id)
 );
 
 CREATE TABLE IF NOT EXISTS transactions(

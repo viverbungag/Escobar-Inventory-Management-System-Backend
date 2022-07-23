@@ -14,5 +14,5 @@ public class SupplierDto {
     private String supplierAddress;
     private String supplierContactNumber;
     private String supplierContactPerson;
-    private Boolean active;
+    private Boolean isActive;
 }

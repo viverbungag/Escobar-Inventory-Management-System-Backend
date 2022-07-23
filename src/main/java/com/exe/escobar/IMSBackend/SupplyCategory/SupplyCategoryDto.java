@@ -11,6 +11,6 @@ public class SupplyCategoryDto {
 
     private Long supplyCategoryId;
     private String supplyCategoryName;
-    private Boolean active;
+    private Boolean isActive;
 
 }

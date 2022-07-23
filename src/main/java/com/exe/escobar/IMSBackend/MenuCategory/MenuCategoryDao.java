@@ -10,7 +10,7 @@ public interface MenuCategoryDao {
 
     public List<MenuCategory> getAllMenuCategories();
 
-    void insertMenuCategory(String menuCategoryName, Boolean active);
+    void insertMenuCategory(String menuCategoryName, Boolean isActive);
 
     Optional<MenuCategory> getMenuCategoryById(Long menuCategoryId);
 

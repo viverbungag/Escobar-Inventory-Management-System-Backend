@@ -29,7 +29,7 @@ public class SupplyCategory {
     private String supplyCategoryName;
 
     @NonNull
-    @Column(name = "active")
-    private Boolean active;
+    @Column(name = "is_active")
+    private Boolean isActive;
 
 }

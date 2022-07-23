@@ -1,5 +1,7 @@
 package com.exe.escobar.IMSBackend.UnitOfMeasurement;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,14 +18,18 @@ public interface UnitOfMeasurementMySqlRepository extends UnitOfMeasurementDao, 
             nativeQuery = true)
     public List<UnitOfMeasurement> getAllUnitOfMeasurements();
 
+    @Query(value = "SELECT * FROM #{#entityName}",
+            nativeQuery = true)
+    Page<UnitOfMeasurement> getAllPagedUnitOfMeasurement(Pageable pageable);
+
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
-            "(unit_of_measurement_name, unit_of_measurement_abbreviation, active) " +
-            "VALUES (:unitOfMeasurementName, :unitOfMeasurementAbbreviation, :active)",
+            "(unit_of_measurement_name, unit_of_measurement_abbreviation, is_active) " +
+            "VALUES (:unitOfMeasurementName, :unitOfMeasurementAbbreviation, :isActive)",
             nativeQuery = true)
     void insertUnitOfMeasurement(@Param("unitOfMeasurementName") String unitOfMeasurementName,
                                  @Param("unitOfMeasurementAbbreviation") String unitOfMeasurementAbbreviation,
-                                 @Param("active") Boolean active);
+                                 @Param("isActive") Boolean isActive);
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE unit_of_measurement_id = :unitOfMeasurementId",
             nativeQuery = true)

@@ -29,7 +29,7 @@ public class SupplierService {
                 supplier.getSupplierAddress(),
                 supplier.getSupplierContactNumber(),
                 supplier.getSupplierContactPerson(),
-                supplier.getActive());
+                supplier.getIsActive());
     }
 
 
@@ -56,7 +56,7 @@ public class SupplierService {
                 supplierDto.getSupplierAddress(),
                 supplierDto.getSupplierContactNumber(),
                 supplierDto.getSupplierContactPerson(),
-                supplierDto.getActive());
+                supplierDto.getIsActive());
     }
 
     public void updateSupplier(SupplierDto supplierDto, Long id) {
@@ -68,7 +68,7 @@ public class SupplierService {
         String address = supplierDto.getSupplierAddress();
         String contactNumber = supplierDto.getSupplierContactNumber();
         String contactPerson = supplierDto.getSupplierContactPerson();
-        Boolean active = supplierDto.getActive();
+        Boolean active = supplierDto.getIsActive();
 
         if (name == null || name.length() <= 0){
             throw new SupplierNameIsNullException();
@@ -91,7 +91,7 @@ public class SupplierService {
         supplier.setSupplierAddress(address);
         supplier.setSupplierContactNumber(contactNumber);
         supplier.setSupplierContactPerson(contactPerson);
-        supplier.setActive(active);
+        supplier.setIsActive(active);
 
     }
 

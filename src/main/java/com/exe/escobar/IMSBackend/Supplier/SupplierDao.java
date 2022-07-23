@@ -15,7 +15,7 @@ public interface SupplierDao {
                         String supplierAddress,
                         String supplierContactNumber,
                         String supplierContactPerson,
-                        Boolean active);
+                        Boolean isActive);
 
     List<Supplier> getAllActiveSuppliers();
 

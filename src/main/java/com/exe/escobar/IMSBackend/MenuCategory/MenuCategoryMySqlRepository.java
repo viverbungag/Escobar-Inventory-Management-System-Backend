@@ -18,11 +18,11 @@ public interface MenuCategoryMySqlRepository extends MenuCategoryDao, JpaReposit
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
-            "(menu_category_name, active) " +
-            "VALUES (:menuCategoryName, :active)",
+            "(menu_category_name, is_active) " +
+            "VALUES (:menuCategoryName, :isActive)",
             nativeQuery = true)
     void insertMenuCategory(@Param("menuCategoryName") String menuCategoryName,
-                            @Param("active") Boolean active);
+                            @Param("isActive") Boolean isActive);
 
     @Query(value = "SELECT * FROM #{#entityName} " +
             "WHERE menu_category_id = :menuCategoryId",

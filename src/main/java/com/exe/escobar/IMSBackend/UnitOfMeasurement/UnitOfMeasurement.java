@@ -34,7 +34,7 @@ public class UnitOfMeasurement {
     private String unitOfMeasurementAbbreviation;
 
     @NonNull
-    @Column(name = "active")
-    private Boolean active;
+    @Column(name = "is_active")
+    private Boolean isActive;
 
 }

@@ -17,20 +17,20 @@ public interface SupplierMySqlRepository extends SupplierDao, JpaRepository<Supp
             nativeQuery = true)
     List<Supplier> getAllSuppliers();
 
-    @Query(value = "SELECT * FROM #{#entityName} WHERE active = true",
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active = true",
             nativeQuery = true)
     List<Supplier> getAllActiveSuppliers();
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
-            "(supplier_name, supplier_address, supplier_contact_number, supplier_contact_person, active) " +
-            "VALUES (:supplierName, :supplierAddress, :supplierContactNumber, :supplierContactPerson, :active)",
+            "(supplier_name, supplier_address, supplier_contact_number, supplier_contact_person, is_active) " +
+            "VALUES (:supplierName, :supplierAddress, :supplierContactNumber, :supplierContactPerson, :isActive)",
             nativeQuery = true)
     void insertSupplier(@Param("supplierName") String supplierName,
                         @Param("supplierAddress") String supplierAddress,
                         @Param("supplierContactNumber") String supplierContactNumber,
                         @Param("supplierContactPerson") String supplierContactPerson,
-                        @Param("active") Boolean active);
+                        @Param("isActive") Boolean isActive);
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE supplier_id = :supplierId",
             nativeQuery = true)

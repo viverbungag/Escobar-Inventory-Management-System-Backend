@@ -25,7 +25,7 @@ public class SupplyCategoryService {
     private SupplyCategoryDto convertEntityToDto(SupplyCategory supplyCategory){
         return new SupplyCategoryDto(supplyCategory.getSupplyCategoryId(),
                 supplyCategory.getSupplyCategoryName(),
-                supplyCategory.getActive());
+                supplyCategory.getIsActive());
     }
 
     public List<SupplyCategoryDto> getAllSupplyCategories(){
@@ -48,7 +48,7 @@ public class SupplyCategoryService {
 
         supplyCategoryRepository.insertSupplyCategory(
                 supplyCategoryDto.getSupplyCategoryName(),
-                supplyCategoryDto.getActive());
+                supplyCategoryDto.getIsActive());
     }
 
     public void updateSupplyCategory(SupplyCategoryDto supplyCategoryDto, Long id) {
@@ -57,7 +57,7 @@ public class SupplyCategoryService {
                 .orElseThrow(() -> new SupplyCategoryNotFoundException(id));
 
         String name = supplyCategoryDto.getSupplyCategoryName();
-        Boolean active = supplyCategoryDto.getActive();
+        Boolean active = supplyCategoryDto.getIsActive();
 
         if (name == null || name.length() <= 0){
             throw new SupplyCategoryNameIsNullException();
@@ -75,6 +75,6 @@ public class SupplyCategoryService {
             supplyCategory.setSupplyCategoryName(name);
         }
 
-        supplyCategory.setActive(active);
+        supplyCategory.setIsActive(active);
     }
 }

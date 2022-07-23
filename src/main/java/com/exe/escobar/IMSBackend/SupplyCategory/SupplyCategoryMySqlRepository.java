@@ -18,11 +18,11 @@ public interface SupplyCategoryMySqlRepository extends SupplyCategoryDao, JpaRep
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
-            "(supply_category_name, active) " +
-            "VALUES (:supplyCategoryName, :active)",
+            "(supply_category_name, is_active) " +
+            "VALUES (:supplyCategoryName, :isActive)",
             nativeQuery = true)
     void insertSupplyCategory(@Param("supplyCategoryName") String supplyCategoryName,
-                              @Param("active") Boolean active);
+                              @Param("isActive") Boolean isActive);
 
     @Query(value = "SELECT * FROM #{#entityName} " +
             "WHERE supply_category_id = :supplyCategoryId",

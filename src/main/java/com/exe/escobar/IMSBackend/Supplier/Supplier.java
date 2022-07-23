@@ -41,6 +41,6 @@ public class Supplier {
     private String supplierContactPerson;
 
     @NonNull
-    @Column(name = "active")
-    private Boolean active;
+    @Column(name = "is_active")
+    private Boolean isActive;
 }
