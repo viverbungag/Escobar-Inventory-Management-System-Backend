@@ -1,5 +1,7 @@
 package com.exe.escobar.IMSBackend.Supplier;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface SupplierDao {
 
-    List<Supplier> getAllSuppliers();
+    Page<Supplier> getAllSuppliers(Pageable pageable);
 
     void insertSupplier(String supplierName,
                         String supplierAddress,

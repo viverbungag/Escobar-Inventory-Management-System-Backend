@@ -1,16 +1,20 @@
 package com.exe.escobar.IMSBackend.Supplier;
 
+import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
+import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNameIsExistingException;
 import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNameIsNullException;
 import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -32,13 +36,62 @@ public class SupplierService {
                 supplier.getIsActive());
     }
 
+    private Sort getSortingMethod(Boolean isAscending, Sort sort){
+        if (isAscending){
+            return sort.ascending();
+        }
+        return sort.descending();
+    }
 
-    public List<SupplierDto> getAllSuppliers() {
-        return supplierRepository
-                .getAllSuppliers()
-                .stream()
-                .map((Supplier supplier)-> convertEntityToDto(supplier))
-                .collect(Collectors.toList());
+    private Sort getSortingValue(String sortedBy){
+
+        switch(sortedBy){
+            case "Name":
+                return Sort.by("supplier_name");
+            case "Address":
+                return Sort.by("supplier_address");
+            case "Contact Number":
+                return Sort.by("supplier_contact_number");
+            case "Contact Person":
+                return Sort.by("supplier_contact_person");
+            default:
+                return Sort.unsorted();
+        }
+    }
+
+
+    public Map<String, Object> getAllSuppliers(PaginationDto paginationDto) {
+        int pageNo = paginationDto.getPageNo();
+        int pageSize = paginationDto.getPageSize();
+        Boolean isAscending = paginationDto.getIsAscending();
+        String sortedBy = paginationDto.getSortedBy();
+
+        Sort sort = getSortingValue(sortedBy);
+        Sort finalSort = getSortingMethod(isAscending, sort);
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
+
+        Page<Supplier> supplierPage = supplierRepository
+                .getAllSuppliers(pageable);
+
+        Integer totalPages = supplierPage.getTotalPages();
+
+        Map<String, Object> suppliersWithPageDetails = new HashMap<>();
+
+        suppliersWithPageDetails.put("contents",
+                supplierPage
+                        .getContent()
+                        .stream()
+                        .map((Supplier supplier) -> convertEntityToDto(supplier))
+                        .collect(Collectors.toList()));
+
+        suppliersWithPageDetails.put("totalPages", totalPages);
+
+        if (pageNo < 1 || pageNo > totalPages){
+            throw new PageOutOfBoundsException(pageNo);
+        }
+
+        return suppliersWithPageDetails;
     }
 
     public void addSupplier(SupplierDto supplierDto) {

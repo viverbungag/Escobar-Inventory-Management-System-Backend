@@ -1,5 +1,7 @@
 package com.exe.escobar.IMSBackend.Supplier;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +17,7 @@ public interface SupplierMySqlRepository extends SupplierDao, JpaRepository<Supp
 
     @Query(value = "SELECT * FROM #{#entityName}",
             nativeQuery = true)
-    List<Supplier> getAllSuppliers();
+    Page<Supplier> getAllSuppliers(Pageable pageable);
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active = true",
             nativeQuery = true)

@@ -1,11 +1,13 @@
 package com.exe.escobar.IMSBackend.Supplier;
 
 
+import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:8888")
@@ -16,8 +18,8 @@ public class SupplierController {
     SupplierService supplierService;
 
     @GetMapping
-    public List<SupplierDto> getAllSuppliers(){
-        return supplierService.getAllSuppliers();
+    public Map<String, Object> getAllSuppliers(@RequestBody PaginationDto paginationDto){
+        return supplierService.getAllSuppliers(paginationDto);
     }
 
     @GetMapping("/active")
