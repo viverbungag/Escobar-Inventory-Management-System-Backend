@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository("menuCategory_mysql")
-public interface MenuCategoryRepository extends MenuCategoryDao, JpaRepository<MenuCategory, Long> {
+public interface MenuCategoryMySqlRepository extends MenuCategoryDao, JpaRepository<MenuCategory, Long> {
 
     @Query(value = "SELECT * FROM #{#entityName}",
             nativeQuery = true)

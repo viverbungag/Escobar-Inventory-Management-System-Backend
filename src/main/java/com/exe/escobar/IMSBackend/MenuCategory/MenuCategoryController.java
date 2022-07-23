@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:8888")
 @RequestMapping("api/v1/menu-category")
 public class MenuCategoryController {
 
     @Autowired
     MenuCategoryService menuCategoryService;
+
 
     @GetMapping
     public List<MenuCategoryDto> getAllMenuCategories(){

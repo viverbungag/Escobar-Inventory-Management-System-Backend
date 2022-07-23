@@ -1,6 +1,5 @@
 package com.exe.escobar.IMSBackend.SupplyCategory;
 
-import com.exe.escobar.IMSBackend.MenuCategory.MenuCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository("supplyCategory_mysql")
-public interface SupplyCategoryRepository extends SupplyCategoryDao, JpaRepository<SupplyCategory, Long> {
+public interface SupplyCategoryMySqlRepository extends SupplyCategoryDao, JpaRepository<SupplyCategory, Long> {
 
     @Query(value = "SELECT * FROM #{#entityName}",
             nativeQuery = true)

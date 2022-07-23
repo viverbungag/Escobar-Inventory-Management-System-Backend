@@ -32,22 +32,22 @@ INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Catego
 INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 15', true);
 INSERT INTO supply_category(supply_category_name, active) VALUES ('Supply Category 16', true);
 
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 1', 'UOM 1');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 2', 'UOM 2');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 3', 'UOM 3');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 4', 'UOM 4');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 5', 'UOM 5');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 6', 'UOM 6');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 7', 'UOM 7');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 8', 'UOM 8');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 9', 'UOM 9');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 10', 'UOM 10');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 11', 'UOM 11');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 12', 'UOM 12');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 13', 'UOM 13');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 14', 'UOM 14');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 15', 'UOM 15');
-INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation) VALUES ('Unit of Measurement 16', 'UOM 16');
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 1', 'UOM 1', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 2', 'UOM 2', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 3', 'UOM 3', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 4', 'UOM 4', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 5', 'UOM 5', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 6', 'UOM 6', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 7', 'UOM 7', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 8', 'UOM 8', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 9', 'UOM 9', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 10', 'UOM 10', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 11', 'UOM 11', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 12', 'UOM 12', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 13', 'UOM 13', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 14', 'UOM 14', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 15', 'UOM 15', true);
+INSERT INTO unit_of_measurement(unit_of_measurement_name, unit_of_measurement_abbreviation, active) VALUES ('Unit of Measurement 16', 'UOM 16', true);
 
 
 INSERT INTO supplier(supplier_name, supplier_address, supplier_contact_number, supplier_contact_person, active) VALUES ('Supplier 1', 'Address 1', '09273173101', 'Person 1', true);

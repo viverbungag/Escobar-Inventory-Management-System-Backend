@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS unit_of_measurement(
     unit_of_measurement_id BIGINT NOT NULL AUTO_INCREMENT,
     unit_of_measurement_name VARCHAR(255) NOT NULL,
     unit_of_measurement_abbreviation VARCHAR(255) NOT NULL,
+    active BOOLEAN DEFAULT true,
     PRIMARY KEY (unit_of_measurement_id)
 );
 

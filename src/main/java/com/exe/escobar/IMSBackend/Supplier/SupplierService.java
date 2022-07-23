@@ -93,7 +93,6 @@ public class SupplierService {
         supplier.setSupplierContactPerson(contactPerson);
         supplier.setActive(active);
 
-
     }
 
     public List<SupplierDto> getAllActiveSuppliers() {
