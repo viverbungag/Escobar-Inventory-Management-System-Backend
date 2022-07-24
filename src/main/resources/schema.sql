@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS supply(
     in_minimum_quantity BOOLEAN,
     is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (supply_id),
-    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ,
+    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id),
     FOREIGN KEY (unit_of_measurement_id) REFERENCES unit_of_measurement(unit_of_measurement_id),
     FOREIGN KEY (supply_category_id) REFERENCES supply_category(supply_category_id)
 );

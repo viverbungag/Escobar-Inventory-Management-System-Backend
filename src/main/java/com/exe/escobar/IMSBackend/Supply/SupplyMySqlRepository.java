@@ -1,7 +1,51 @@
 package com.exe.escobar.IMSBackend.Supply;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository("supply_mysql")
-public class SupplyMySqlRepository {
+public interface SupplyMySqlRepository extends SupplyDao, JpaRepository<Supply, Long> {
+
+    @Query(value = "SELECT * FROM #{#entityName}",
+            nativeQuery = true)
+    List<Supply> getAllSupply();
+
+    @Query(value = "SELECT * FROM #{#entityName} AS supply" +
+            " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
+            " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
+            " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName}",
+            nativeQuery = true)
+    Page<Supply> getAllPagedSupplies(Pageable pageable);
+
+    @Modifying
+    @Query(value = "INSERT INTO #{#entityName} " +
+            "(supply_name, supply_quantity, minimum_quantity, in_minimum_quantity, supplier_id, unit_of_measurement_id, supply_category_id, is_active) " +
+            "VALUES (:supplyName, :supplyQuantity, :minimumQuantity, :inMinimumQuantity, :supplierId, :unitOfMeasurementId, :supplyCategoryId, :isActive)",
+            nativeQuery = true)
+    void insertSupply(@Param("supplyName")String supplyName,
+                      @Param("supplyQuantity")Double supplyQuantity,
+                      @Param("minimumQuantity")Double minimumQuantity,
+                      @Param("inMinimumQuantity")Boolean inMinimumQuantity,
+                      @Param("supplierId")Long supplierId,
+                      @Param("unitOfMeasurementId")Long unitOfMeasurementId,
+                      @Param("supplyCategoryId")Long supplyCategoryId,
+                      @Param("isActive")Boolean isActive);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE supply_id = :supplyId",
+            nativeQuery = true)
+    Optional<Supply> getSupplyById(@Param("supplyId") Long supplyId);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE supply_name = :supplyName",
+            nativeQuery = true)
+    Optional<Supply> getSupplyByName(@Param("supplyName") String supplyName);
+
 }

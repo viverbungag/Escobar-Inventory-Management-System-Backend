@@ -33,7 +33,7 @@ public class Supply {
     private Double supplyQuantity;
 
     @NonNull
-    @Column(name = "minimumQuantity")
+    @Column(name = "minimum_quantity")
     private Double minimumQuantity;
 
     @NonNull

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:8888")
-@RequestMapping("api/v1/suppliers")
+@RequestMapping("api/v1/supplier")
 public class SupplierController {
 
     @Autowired
