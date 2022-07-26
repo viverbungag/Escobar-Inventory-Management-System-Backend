@@ -15,7 +15,7 @@ public class SupplyController {
     SupplyService supplyService;
 
     @GetMapping
-    public Map<String, Object> getSuppliers(@RequestBody PaginationDto paginationDto){
+    public Map<String, Object> getAllSupplies(@RequestBody PaginationDto paginationDto){
         return supplyService.getAllSupplies(paginationDto);
     }
 

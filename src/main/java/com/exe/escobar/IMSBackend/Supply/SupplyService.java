@@ -94,8 +94,6 @@ public class SupplyService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
 
-        List<Supply> supplies = supplyRepository.getAllSupply();
-
         Page<Supply> supplyPage = supplyRepository
                 .getAllPagedSupplies(pageable);
 
@@ -128,8 +126,6 @@ public class SupplyService {
         if (supplyOptional.isPresent()){
             throw new SupplyNameIsExistingException(name);
         }
-
-        System.out.println(supplyDto);
 
         supplyRepository.insertSupply(
                 supplyDto.getSupplyName(),

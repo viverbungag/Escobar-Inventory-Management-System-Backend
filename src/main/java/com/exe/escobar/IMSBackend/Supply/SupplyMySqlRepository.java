@@ -14,10 +14,6 @@ import java.util.Optional;
 @Repository("supply_mysql")
 public interface SupplyMySqlRepository extends SupplyDao, JpaRepository<Supply, Long> {
 
-    @Query(value = "SELECT * FROM #{#entityName}",
-            nativeQuery = true)
-    List<Supply> getAllSupply();
-
     @Query(value = "SELECT * FROM #{#entityName} AS supply" +
             " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
             " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +

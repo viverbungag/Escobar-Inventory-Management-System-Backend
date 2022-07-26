@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS utility CASCADE;
 DROP TABLE IF EXISTS serving CASCADE;
 DROP TABLE IF EXISTS food_order CASCADE;
 DROP TABLE IF EXISTS customer CASCADE;
+DROP TABLE IF EXISTS menu_ingredients CASCADE;
 DROP TABLE IF EXISTS menu CASCADE;
 DROP TABLE IF EXISTS transactions CASCADE;
 DROP TABLE IF EXISTS supply CASCADE;
@@ -89,14 +90,14 @@ CREATE TABLE IF NOT EXISTS account(
 
 CREATE TABLE IF NOT EXISTS menu_category(
     menu_category_id BIGINT NOT NULL AUTO_INCREMENT,
-    menu_category_name VARCHAR(255) NOT NULL,
+    menu_category_name VARCHAR(255) NOT NULL UNIQUE,
     is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (menu_category_id)
 );
 
 CREATE TABLE IF NOT EXISTS unit_of_measurement(
     unit_of_measurement_id BIGINT NOT NULL AUTO_INCREMENT,
-    unit_of_measurement_name VARCHAR(255) NOT NULL,
+    unit_of_measurement_name VARCHAR(255) NOT NULL UNIQUE,
     unit_of_measurement_abbreviation VARCHAR(255) NOT NULL,
     is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (unit_of_measurement_id)
@@ -104,14 +105,14 @@ CREATE TABLE IF NOT EXISTS unit_of_measurement(
 
 CREATE TABLE IF NOT EXISTS supply_category(
     supply_category_id BIGINT AUTO_INCREMENT,
-    supply_category_name VARCHAR(255) NOT NULL,
+    supply_category_name VARCHAR(255) NOT NULL UNIQUE,
     is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (supply_category_id)
 );
 
 CREATE TABLE IF NOT EXISTS supplier(
     supplier_id BIGINT NOT NULL AUTO_INCREMENT,
-    supplier_name VARCHAR(255),
+    supplier_name VARCHAR(255) UNIQUE,
     supplier_address VARCHAR(255),
     supplier_contact_number VARCHAR(255),
     supplier_contact_person VARCHAR(255),
@@ -121,7 +122,7 @@ CREATE TABLE IF NOT EXISTS supplier(
 
 CREATE TABLE IF NOT EXISTS supply(
     supply_id BIGINT NOT NULL AUTO_INCREMENT,
-    supply_name VARCHAR(255) NOT NULL,
+    supply_name VARCHAR(255) NOT NULL UNIQUE,
     supply_quantity DECIMAL(10, 2) NOT NULL,
     supplier_id BIGINT,
     unit_of_measurement_id BIGINT,
@@ -152,14 +153,23 @@ CREATE TABLE IF NOT EXISTS transactions(
 
 CREATE TABLE IF NOT EXISTS menu(
     menu_id BIGINT NOT NULL AUTO_INCREMENT,
-    menu_name VARCHAR(255) NOT NULL,
+    menu_name VARCHAR(255) NOT NULL UNIQUE,
     menu_price DECIMAL(10, 2) NOT NULL,
     menu_category_id BIGINT,
-    ingredients BIGINT,
     number_of_servings_left INTEGER,
+    is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (menu_id),
-    FOREIGN KEY (menu_category_id) REFERENCES menu_category(menu_category_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (ingredients) REFERENCES supply(supply_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (menu_category_id) REFERENCES menu_category(menu_category_id)
+);
+
+CREATE TABLE IF NOT EXISTS menu_ingredients(
+    menu_ingredients_id BIGINT NOT NULL AUTO_INCREMENT,
+    menu_id BIGINT,
+    supply_id BIGINT,
+    quantity INTEGER,
+    PRIMARY KEY (menu_ingredients_id),
+    FOREIGN KEY (menu_id) REFERENCES menu(menu_id),
+    FOREIGN KEY (supply_id) REFERENCES supply(supply_id)
 );
 
 CREATE TABLE IF NOT EXISTS customer(

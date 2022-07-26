@@ -83,3 +83,37 @@ INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measuremen
 INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 14', 0, 14, 14, 14, 24, false, true);
 INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 15', 0, 15, 15, 15, 25, false, true);
 INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 16', 0, 16, 16, 16, 26, false, true);
+
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 1', 10, 1, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 2', 11, 2, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 3', 12, 3, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 4', 13, 4, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 5', 14, 5, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 6', 15, 6, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 7', 16, 7, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 8', 17, 8, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 9', 18, 9, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 10', 19, 10, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 11', 20, 11, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 12', 21, 12, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 13', 22, 13, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 14', 23, 14, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 15', 24, 15, 20, true);
+INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 16', 25, 16, 20, true);
+
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (1, 1, 3);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (1, 2, 4);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (1, 3, 5);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (2, 4, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (3, 5, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (4, 6, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (5, 7, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (6, 8, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (7, 9, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (8, 10, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (9, 11, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (10, 12, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (11, 13, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (12, 14, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (13, 15, 1);
+INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (14, 16, 1);
