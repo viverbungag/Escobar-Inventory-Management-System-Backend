@@ -2,6 +2,8 @@ package com.exe.escobar.IMSBackend.MenuCategory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,12 @@ public interface MenuCategoryDao {
     Optional<MenuCategory> getMenuCategoryByName(String menuCategoryName);
 
     Page<MenuCategory> getAllMenuCategories(Pageable pageable);
+
+    Page<MenuCategory> getAllActiveMenuCategories(Pageable pageable);
+
+    Page<MenuCategory> getAllInactiveMenuCategories(Pageable pageable);
+
+    void inactivateMenuCategory(List<String> menuCategoryNames);
+
+    void activateMenuCategory(List<String> menuCategoryNames);
 }

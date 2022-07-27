@@ -18,6 +18,24 @@ public interface MenuCategoryMySqlRepository extends MenuCategoryDao, JpaReposit
             nativeQuery = true)
     Page<MenuCategory> getAllMenuCategories(Pageable pageable);
 
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
+            nativeQuery = true)
+    Page<MenuCategory> getAllActiveMenuCategories(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=false",
+            nativeQuery = true)
+    Page<MenuCategory> getAllInactiveMenuCategories(Pageable pageable);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=false WHERE menu_category_name IN :menuCategoryNames",
+            nativeQuery = true)
+    void inactivateMenuCategory(@Param("menuCategoryNames") List<String> menuCategoryNames);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=true WHERE menu_category_name IN :menuCategoryNames",
+            nativeQuery = true)
+    void activateMenuCategory(@Param("menuCategoryNames") List<String> menuCategoryNames);
+
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
             "(menu_category_name, is_active) " +

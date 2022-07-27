@@ -4,6 +4,7 @@ import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,29 @@ public class MenuCategoryController {
     MenuCategoryService menuCategoryService;
 
 
-    @GetMapping
+    @PostMapping
     public Map<String, Object> getAllMenuCategories(@RequestBody PaginationDto paginationDto){
         return menuCategoryService.getAllMenuCategories(paginationDto);
+    }
+
+    @PostMapping("/active")
+    public Map<String, Object> getAllActiveMenuCategories(@RequestBody PaginationDto paginationDto){
+        return menuCategoryService.getAllActiveMenuCategories(paginationDto);
+    }
+
+    @PostMapping("/inactive")
+    public Map<String, Object> getAllInactiveMenuCategories(@RequestBody PaginationDto paginationDto){
+        return menuCategoryService.getAllInactiveMenuCategories(paginationDto);
+    }
+
+    @PostMapping("/activate")
+    public void activateMenuCategory(@RequestBody MenuCategoryListDto menuCategoryListDto){
+        menuCategoryService.activateMenuCategory(menuCategoryListDto);
+    }
+
+    @PostMapping("/inactivate")
+    public void inactivateMenuCategory(@RequestBody MenuCategoryListDto menuCategoryListDto){
+        menuCategoryService.inactivateMenuCategory(menuCategoryListDto);
     }
 
     @PostMapping("/add")

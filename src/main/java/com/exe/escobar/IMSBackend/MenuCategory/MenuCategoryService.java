@@ -44,12 +44,14 @@ public class MenuCategoryService {
         switch(sortedBy){
             case "Name":
                 return Sort.by("menu_category_name");
+            case "None":
+                return Sort.by("menu_category_id");
             default:
                 return Sort.unsorted();
         }
     }
 
-    public Map<String, Object> getAllMenuCategories(PaginationDto paginationDto) {
+    private Pageable initializePageable(PaginationDto paginationDto){
         int pageNo = paginationDto.getPageNo();
         int pageSize = paginationDto.getPageSize();
         Boolean isAscending = paginationDto.getIsAscending();
@@ -60,10 +62,16 @@ public class MenuCategoryService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
 
-        Page<MenuCategory> menuCategoryPage = menuCategoryRepository
-                .getAllMenuCategories(pageable);
+        return pageable;
+    }
 
+    private Map<String, Object> initializeMenuCategoryWithPageDetails(Page<MenuCategory> menuCategoryPage, int pageNo){
         Integer totalPages = menuCategoryPage.getTotalPages();
+        Long totalCount = menuCategoryPage.getTotalElements();
+
+        if (pageNo < 1 || pageNo > totalPages){
+            throw new PageOutOfBoundsException(pageNo);
+        }
 
         Map<String, Object> menuCategoryWithPageDetails = new HashMap<>();
 
@@ -75,13 +83,41 @@ public class MenuCategoryService {
                         .collect(Collectors.toList()));
 
         menuCategoryWithPageDetails.put("totalPages", totalPages);
+        menuCategoryWithPageDetails.put("totalCount", totalCount);
 
-        if (pageNo < 1 || pageNo > totalPages){
-            throw new PageOutOfBoundsException(pageNo);
-        }
+
 
         return menuCategoryWithPageDetails;
+    }
 
+    public Map<String, Object> getAllMenuCategories(PaginationDto paginationDto) {
+        int pageNo = paginationDto.getPageNo();
+        Pageable pageable = initializePageable(paginationDto);
+
+        Page<MenuCategory> menuCategoryPage = menuCategoryRepository
+                .getAllMenuCategories(pageable);
+
+        return initializeMenuCategoryWithPageDetails(menuCategoryPage, pageNo);
+    }
+
+    public Map<String, Object> getAllActiveMenuCategories(PaginationDto paginationDto) {
+        int pageNo = paginationDto.getPageNo();
+        Pageable pageable = initializePageable(paginationDto);
+
+        Page<MenuCategory> menuCategoryPage = menuCategoryRepository
+                .getAllActiveMenuCategories(pageable);
+
+        return initializeMenuCategoryWithPageDetails(menuCategoryPage, pageNo);
+    }
+
+    public Map<String, Object> getAllInactiveMenuCategories(PaginationDto paginationDto) {
+        int pageNo = paginationDto.getPageNo();
+        Pageable pageable = initializePageable(paginationDto);
+
+        Page<MenuCategory> menuCategoryPage = menuCategoryRepository
+                .getAllInactiveMenuCategories(pageable);
+
+        return initializeMenuCategoryWithPageDetails(menuCategoryPage, pageNo);
     }
 
     public void addMenuCategory(MenuCategoryDto menuCategoryDto) {
@@ -98,6 +134,26 @@ public class MenuCategoryService {
                 menuCategoryDto.getMenuCategoryName(),
                 menuCategoryDto.getIsActive()
         );
+    }
+
+    public void inactivateMenuCategory(MenuCategoryListDto menuCategoryListDto){
+        List<String> menuCategoryNames = menuCategoryListDto
+                .getMenuCategoryListDto()
+                .stream()
+                .map((menuCategoryDto) -> menuCategoryDto.getMenuCategoryName())
+                .collect(Collectors.toList());
+
+        menuCategoryRepository.inactivateMenuCategory(menuCategoryNames);
+    }
+
+    public void activateMenuCategory(MenuCategoryListDto menuCategoryListDto){
+        List<String> menuCategoryNames = menuCategoryListDto
+                .getMenuCategoryListDto()
+                .stream()
+                .map((menuCategoryDto) -> menuCategoryDto.getMenuCategoryName())
+                .collect(Collectors.toList());
+
+        menuCategoryRepository.activateMenuCategory(menuCategoryNames);
     }
 
     public void updateMenuCategory(MenuCategoryDto menuCategoryDto, Long id) {

@@ -12,8 +12,8 @@ INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 
 INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 12', true);
 INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 13', true);
 INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 14', true);
-INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 15', true);
-INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 16', true);
+INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 15', false);
+INSERT INTO menu_category(menu_category_name, is_active) VALUES ('Menu Category 16', false);
 
 INSERT INTO supply_category(supply_category_name, is_active) VALUES ('Supply Category 1', true);
 INSERT INTO supply_category(supply_category_name, is_active) VALUES ('Supply Category 2', true);
