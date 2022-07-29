@@ -69,11 +69,14 @@ public class MenuCategoryService {
         Integer totalPages = menuCategoryPage.getTotalPages();
         Long totalCount = menuCategoryPage.getTotalElements();
 
-        if (pageNo < 1 || pageNo > totalPages){
-            throw new PageOutOfBoundsException(pageNo);
-        }
-
         Map<String, Object> menuCategoryWithPageDetails = new HashMap<>();
+
+        if (pageNo < 1 || pageNo > totalPages){
+            menuCategoryWithPageDetails.put("contents", new ArrayList<>());
+            menuCategoryWithPageDetails.put("totalPages", 0);
+            menuCategoryWithPageDetails.put("totalCount", 0);
+            return menuCategoryWithPageDetails;
+        }
 
         menuCategoryWithPageDetails.put("contents",
                 menuCategoryPage
@@ -125,6 +128,10 @@ public class MenuCategoryService {
 
         Optional<MenuCategory> menuCategoryOptional = menuCategoryRepository
                 .getMenuCategoryByName(name);
+
+        if (name == null || name.length() <= 0){
+            throw new MenuCategoryNameIsNullException();
+        }
 
         if (menuCategoryOptional.isPresent()){
             throw new MenuCategoryNameIsExistingException(name);

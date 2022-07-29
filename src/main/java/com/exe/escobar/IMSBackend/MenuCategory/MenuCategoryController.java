@@ -34,11 +34,13 @@ public class MenuCategoryController {
 
     @PostMapping("/activate")
     public void activateMenuCategory(@RequestBody MenuCategoryListDto menuCategoryListDto){
+        System.out.println("activate: " + menuCategoryListDto);
         menuCategoryService.activateMenuCategory(menuCategoryListDto);
     }
 
     @PostMapping("/inactivate")
     public void inactivateMenuCategory(@RequestBody MenuCategoryListDto menuCategoryListDto){
+        System.out.println("inactivate: " + menuCategoryListDto);
         menuCategoryService.inactivateMenuCategory(menuCategoryListDto);
     }
 
