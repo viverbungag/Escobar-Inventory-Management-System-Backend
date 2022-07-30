@@ -65,7 +65,8 @@ public class MenuCategoryService {
         return pageable;
     }
 
-    private Map<String, Object> initializeMenuCategoryWithPageDetails(Page<MenuCategory> menuCategoryPage, int pageNo){
+    private Map<String, Object> initializeMenuCategoryWithPageDetails(Page<MenuCategory> menuCategoryPage, PaginationDto paginationDto){
+        Integer pageNo = paginationDto.getPageNo();
         Integer totalPages = menuCategoryPage.getTotalPages();
         Long totalCount = menuCategoryPage.getTotalElements();
 
@@ -94,33 +95,27 @@ public class MenuCategoryService {
     }
 
     public Map<String, Object> getAllMenuCategories(PaginationDto paginationDto) {
-        int pageNo = paginationDto.getPageNo();
         Pageable pageable = initializePageable(paginationDto);
-
         Page<MenuCategory> menuCategoryPage = menuCategoryRepository
                 .getAllMenuCategories(pageable);
 
-        return initializeMenuCategoryWithPageDetails(menuCategoryPage, pageNo);
+        return initializeMenuCategoryWithPageDetails(menuCategoryPage, paginationDto);
     }
 
     public Map<String, Object> getAllActiveMenuCategories(PaginationDto paginationDto) {
-        int pageNo = paginationDto.getPageNo();
         Pageable pageable = initializePageable(paginationDto);
-
         Page<MenuCategory> menuCategoryPage = menuCategoryRepository
                 .getAllActiveMenuCategories(pageable);
 
-        return initializeMenuCategoryWithPageDetails(menuCategoryPage, pageNo);
+        return initializeMenuCategoryWithPageDetails(menuCategoryPage, paginationDto);
     }
 
     public Map<String, Object> getAllInactiveMenuCategories(PaginationDto paginationDto) {
-        int pageNo = paginationDto.getPageNo();
         Pageable pageable = initializePageable(paginationDto);
-
         Page<MenuCategory> menuCategoryPage = menuCategoryRepository
                 .getAllInactiveMenuCategories(pageable);
 
-        return initializeMenuCategoryWithPageDetails(menuCategoryPage, pageNo);
+        return initializeMenuCategoryWithPageDetails(menuCategoryPage, paginationDto);
     }
 
     public void addMenuCategory(MenuCategoryDto menuCategoryDto) {

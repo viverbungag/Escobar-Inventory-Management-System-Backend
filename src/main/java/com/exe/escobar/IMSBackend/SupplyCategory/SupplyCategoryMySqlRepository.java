@@ -18,6 +18,24 @@ public interface SupplyCategoryMySqlRepository extends SupplyCategoryDao, JpaRep
             nativeQuery = true)
     Page<SupplyCategory> getAllSupplyCategories(Pageable pageable);
 
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
+            nativeQuery = true)
+    Page<SupplyCategory> getAllActiveSupplyCategories(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=false",
+            nativeQuery = true)
+    Page<SupplyCategory> getAllInactiveSupplyCategories(Pageable pageable);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=false WHERE supply_category_name IN :supplyCategoryNames",
+            nativeQuery = true)
+     void inactivateSupplyCategory(@Param("supplyCategoryNames") List<String> supplyCategoryNames);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=true WHERE supply_category_name IN :supplyCategoryNames",
+            nativeQuery = true)
+    void activateSupplyCategory(@Param("supplyCategoryNames") List<String> supplyCategoryNames);
+
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
             "(supply_category_name, is_active) " +

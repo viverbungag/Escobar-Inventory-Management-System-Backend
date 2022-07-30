@@ -1,5 +1,7 @@
 package com.exe.escobar.IMSBackend.SupplyCategory;
 
+import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsNullException;
+import com.exe.escobar.IMSBackend.MenuCategory.MenuCategory;
 import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import com.exe.escobar.IMSBackend.SupplyCategory.Exceptions.SupplyCategoryNameIsExistingException;
@@ -27,7 +29,8 @@ public class SupplyCategoryService {
     SupplyCategoryDao supplyCategoryRepository;
 
     private SupplyCategoryDto convertEntityToDto(SupplyCategory supplyCategory){
-        return new SupplyCategoryDto(supplyCategory.getSupplyCategoryId(),
+        return new SupplyCategoryDto(
+                supplyCategory.getSupplyCategoryId(),
                 supplyCategory.getSupplyCategoryName(),
                 supplyCategory.getIsActive());
     }
@@ -44,12 +47,14 @@ public class SupplyCategoryService {
         switch(sortedBy){
             case "Name":
                 return Sort.by("supply_category_name");
+            case "None":
+                return Sort.by("supply_category_id");
             default:
                 return Sort.unsorted();
         }
     }
 
-    public Map<String, Object> getAllSupplyCategories(PaginationDto paginationDto){
+    private Pageable initializePageable(PaginationDto paginationDto){
         int pageNo = paginationDto.getPageNo();
         int pageSize = paginationDto.getPageSize();
         Boolean isAscending = paginationDto.getIsAscending();
@@ -60,27 +65,60 @@ public class SupplyCategoryService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
 
-        Page<SupplyCategory> supplyCategoryPage = supplyCategoryRepository
-                .getAllSupplyCategories(pageable);
+        return pageable;
+    }
 
+    private Map<String, Object> initializeSupplyCategoryWithPageDetails(Page<SupplyCategory> supplyCategoryPage, PaginationDto paginationDto){
+        Integer pageNo = paginationDto.getPageNo();
         Integer totalPages = supplyCategoryPage.getTotalPages();
+        Long totalCount = supplyCategoryPage.getTotalElements();
 
         Map<String, Object> supplyCategoryWithPageDetails = new HashMap<>();
+
+        if (pageNo < 1 || pageNo > totalPages){
+            supplyCategoryWithPageDetails.put("contents", new ArrayList<>());
+            supplyCategoryWithPageDetails.put("totalPages", 0);
+            supplyCategoryWithPageDetails.put("totalCount", 0);
+            return supplyCategoryWithPageDetails;
+        }
 
         supplyCategoryWithPageDetails.put("contents",
                 supplyCategoryPage
                         .getContent()
                         .stream()
-                        .map((SupplyCategory supplyCategory) -> convertEntityToDto(supplyCategory))
+                        .map((SupplyCategory supplyCategory)-> convertEntityToDto(supplyCategory))
                         .collect(Collectors.toList()));
 
         supplyCategoryWithPageDetails.put("totalPages", totalPages);
-
-        if (pageNo < 1 || pageNo > totalPages){
-            throw new PageOutOfBoundsException(pageNo);
-        }
+        supplyCategoryWithPageDetails.put("totalCount", totalCount);
 
         return supplyCategoryWithPageDetails;
+    }
+
+
+
+    public Map<String, Object> getAllSupplyCategories(PaginationDto paginationDto){
+        Pageable pageable = initializePageable(paginationDto);
+        Page<SupplyCategory> supplyCategoryPage = supplyCategoryRepository
+                .getAllSupplyCategories(pageable);
+
+        return initializeSupplyCategoryWithPageDetails(supplyCategoryPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllActiveSupplyCategories(PaginationDto paginationDto){
+        Pageable pageable = initializePageable(paginationDto);
+        Page<SupplyCategory> supplyCategoryPage = supplyCategoryRepository
+                .getAllActiveSupplyCategories(pageable);
+
+        return initializeSupplyCategoryWithPageDetails(supplyCategoryPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllInactiveSupplyCategories(PaginationDto paginationDto){
+        Pageable pageable = initializePageable(paginationDto);
+        Page<SupplyCategory> supplyCategoryPage = supplyCategoryRepository
+                .getAllInactiveSupplyCategories(pageable);
+
+        return initializeSupplyCategoryWithPageDetails(supplyCategoryPage, paginationDto);
     }
 
     public void addSupplyCategory(SupplyCategoryDto supplyCategoryDto) {
@@ -89,6 +127,10 @@ public class SupplyCategoryService {
         Optional<SupplyCategory> supplyCategoryOptional = supplyCategoryRepository
                 .getSupplyCategoryByName(name);
 
+        if (name == null || name.length() <= 0){
+            throw new SupplyCategoryNameIsNullException();
+        }
+
         if (supplyCategoryOptional.isPresent()){
             throw new SupplyCategoryNameIsExistingException(name);
         }
@@ -96,6 +138,26 @@ public class SupplyCategoryService {
         supplyCategoryRepository.insertSupplyCategory(
                 supplyCategoryDto.getSupplyCategoryName(),
                 supplyCategoryDto.getIsActive());
+    }
+
+    public void inactivateSupplyCategory(SupplyCategoryListDto supplyCategoryListDto){
+        List<String> supplyCategoryNames = supplyCategoryListDto
+                .getSupplyCategoryListDto()
+                .stream()
+                .map((menuCategoryDto) -> menuCategoryDto.getSupplyCategoryName())
+                .collect(Collectors.toList());
+
+        supplyCategoryRepository.inactivateSupplyCategory(supplyCategoryNames);
+    }
+
+    public void activateSupplyCategory(SupplyCategoryListDto supplyCategoryListDto){
+        List<String> supplyCategoryNames = supplyCategoryListDto
+                .getSupplyCategoryListDto()
+                .stream()
+                .map((menuCategoryDto) -> menuCategoryDto.getSupplyCategoryName())
+                .collect(Collectors.toList());
+
+        supplyCategoryRepository.activateSupplyCategory(supplyCategoryNames);
     }
 
     public void updateSupplyCategory(SupplyCategoryDto supplyCategoryDto, Long id) {
@@ -110,7 +172,7 @@ public class SupplyCategoryService {
             throw new SupplyCategoryNameIsNullException();
         }
 
-        if (!Objects.equals(supplyCategory.getSupplyCategoryName(), name)){
+        if (!Objects.equals(supplyCategory.getSupplyCategoryName(), name)) {
 
             Optional<SupplyCategory> supplyCategoryOptional = supplyCategoryRepository
                     .getSupplyCategoryByName(name);
