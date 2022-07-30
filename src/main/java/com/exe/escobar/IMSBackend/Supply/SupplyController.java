@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@CrossOrigin("http://localhost:8888")
+@CrossOrigin
 @RequestMapping("api/v1/supply")
 public class SupplyController {
 

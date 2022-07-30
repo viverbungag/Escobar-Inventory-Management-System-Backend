@@ -11,16 +11,31 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("unit_of_measurement_mysql")
+@Repository("unitOfMeasurement_mysql")
 public interface UnitOfMeasurementMySqlRepository extends UnitOfMeasurementDao, JpaRepository<UnitOfMeasurement, Long> {
 
     @Query(value = "SELECT * FROM #{#entityName}",
             nativeQuery = true)
-    public List<UnitOfMeasurement> getAllUnitOfMeasurements();
+    Page<UnitOfMeasurement> getAllUnitOfMeasurements(Pageable pageable);
 
-    @Query(value = "SELECT * FROM #{#entityName}",
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
             nativeQuery = true)
-    Page<UnitOfMeasurement> getAllPagedUnitOfMeasurement(Pageable pageable);
+    Page<UnitOfMeasurement> getAllActiveUnitOfMeasurements(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=false",
+            nativeQuery = true)
+    Page<UnitOfMeasurement> getAllInactiveUnitOfMeasurements(Pageable pageable);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=false WHERE unit_of_measurement_name IN :unitOfMeasurementNames",
+            nativeQuery = true)
+    void inactivateUnitOfMeasurement(@Param("unitOfMeasurementNames") List<String> unitOfMeasurementNames);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=true WHERE unit_of_measurement_name IN :unitOfMeasurementNames",
+            nativeQuery = true)
+    void activateUnitOfMeasurement(@Param("unitOfMeasurementNames") List<String> unitOfMeasurementNames);
+
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +

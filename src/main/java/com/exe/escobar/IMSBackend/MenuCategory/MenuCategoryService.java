@@ -148,7 +148,7 @@ public class MenuCategoryService {
         menuCategoryRepository.inactivateMenuCategory(menuCategoryNames);
     }
 
-    public void activateMenuCategory(MenuCategoryListDto menuCategoryListDto){
+    public void activateMenuCategory(MenuCategoryListDto menuCategoryListDto) {
         List<String> menuCategoryNames = menuCategoryListDto
                 .getMenuCategoryListDto()
                 .stream()

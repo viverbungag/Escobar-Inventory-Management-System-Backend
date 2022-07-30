@@ -1,5 +1,8 @@
 package com.exe.escobar.IMSBackend.UnitOfMeasurement;
 
+import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsNullException;
+import com.exe.escobar.IMSBackend.MenuCategory.MenuCategory;
+import com.exe.escobar.IMSBackend.MenuCategory.MenuCategoryListDto;
 import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import com.exe.escobar.IMSBackend.UnitOfMeasurement.Exceptions.UnitOfMeasurementNameIsExistingException;
@@ -23,7 +26,7 @@ import java.util.stream.Collectors;
 public class UnitOfMeasurementService {
 
     @Autowired
-    @Qualifier("unit_of_measurement_mysql")
+    @Qualifier("unitOfMeasurement_mysql")
     UnitOfMeasurementDao unitOfMeasurementRepository;
 
     private UnitOfMeasurementDto convertEntityToDto(UnitOfMeasurement unitOfMeasurement){
@@ -49,12 +52,14 @@ public class UnitOfMeasurementService {
                 return Sort.by("unit_of_measurement_name");
             case "Abbreviation":
                 return Sort.by("unit_of_measurement_abbreviation");
+            case "None":
+                return Sort.by("unit_of_measurement_id");
             default:
                 return Sort.unsorted();
         }
     }
 
-    public Map<String, Object> getAllUnitOfMeasurements(PaginationDto paginationDto) {
+    private Pageable initializePageable(PaginationDto paginationDto){
         int pageNo = paginationDto.getPageNo();
         int pageSize = paginationDto.getPageSize();
         Boolean isAscending = paginationDto.getIsAscending();
@@ -65,27 +70,58 @@ public class UnitOfMeasurementService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
 
-        Page<UnitOfMeasurement> unitOfMeasurementPage = unitOfMeasurementRepository
-                .getAllPagedUnitOfMeasurement(pageable);
+        return pageable;
+    }
 
+    private Map<String, Object> initializeUnitOfMeasurementWithPageDetails(Page<UnitOfMeasurement> unitOfMeasurementPage, PaginationDto paginationDto){
+        Integer pageNo = paginationDto.getPageNo();
         Integer totalPages = unitOfMeasurementPage.getTotalPages();
+        Long totalCount = unitOfMeasurementPage.getTotalElements();
 
-        Map<String, Object> unitOfMeasurementsWithPageDetails = new HashMap<>();
+        Map<String, Object> unitOfMeasurementWithPageDetails = new HashMap<>();
 
-        unitOfMeasurementsWithPageDetails.put("contents",
+        if (pageNo < 1 || pageNo > totalPages){
+            unitOfMeasurementWithPageDetails.put("contents", new ArrayList<>());
+            unitOfMeasurementWithPageDetails.put("totalPages", 0);
+            unitOfMeasurementWithPageDetails.put("totalCount", 0);
+            return unitOfMeasurementWithPageDetails;
+        }
+
+        unitOfMeasurementWithPageDetails.put("contents",
                 unitOfMeasurementPage
                         .getContent()
                         .stream()
-                        .map((UnitOfMeasurement unitOfMeasurement) -> convertEntityToDto(unitOfMeasurement))
+                        .map((UnitOfMeasurement unitOfMeasurement)-> convertEntityToDto(unitOfMeasurement))
                         .collect(Collectors.toList()));
 
-        unitOfMeasurementsWithPageDetails.put("totalPages", totalPages);
+        unitOfMeasurementWithPageDetails.put("totalPages", totalPages);
+        unitOfMeasurementWithPageDetails.put("totalCount", totalCount);
 
-        if (pageNo < 1 || pageNo > totalPages){
-            throw new PageOutOfBoundsException(pageNo);
-        }
+        return unitOfMeasurementWithPageDetails;
+    }
 
-        return unitOfMeasurementsWithPageDetails;
+    public Map<String, Object> getAllUnitOfMeasurements(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<UnitOfMeasurement> unitOfMeasurementPage = unitOfMeasurementRepository
+                .getAllUnitOfMeasurements(pageable);
+
+        return initializeUnitOfMeasurementWithPageDetails(unitOfMeasurementPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllActiveUnitOfMeasurements(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<UnitOfMeasurement> unitOfMeasurementPage = unitOfMeasurementRepository
+                .getAllActiveUnitOfMeasurements(pageable);
+
+        return initializeUnitOfMeasurementWithPageDetails(unitOfMeasurementPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllInactiveUnitOfMeasurements(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<UnitOfMeasurement> unitOfMeasurementPage = unitOfMeasurementRepository
+                .getAllInactiveUnitOfMeasurements(pageable);
+
+        return initializeUnitOfMeasurementWithPageDetails(unitOfMeasurementPage, paginationDto);
     }
 
     public void addUnitOfMeasurement(UnitOfMeasurementDto unitOfMeasurementDto) {
@@ -93,6 +129,10 @@ public class UnitOfMeasurementService {
 
         Optional<UnitOfMeasurement> unitOfMeasurementOptional = unitOfMeasurementRepository
                 .getUnitOfMeasurementByName(name);
+
+        if (name == null || name.length() <= 0){
+            throw new UnitOfMeasurementNameIsNullException();
+        }
 
         if (unitOfMeasurementOptional.isPresent()){
             throw new UnitOfMeasurementNameIsExistingException(name);
@@ -102,6 +142,26 @@ public class UnitOfMeasurementService {
                 unitOfMeasurementDto.getUnitOfMeasurementName(),
                 unitOfMeasurementDto.getUnitOfMeasurementAbbreviation(),
                 unitOfMeasurementDto.getIsActive());
+    }
+
+    public void inactivateUnitOfMeasurement(UnitOfMeasurementListDto unitOfMeasurementListDto){
+        List<String> unitOfMeasurementNames = unitOfMeasurementListDto
+                .getUnitOfMeasurementListDto()
+                .stream()
+                .map((unitOfMeasurementDto) -> unitOfMeasurementDto.getUnitOfMeasurementName())
+                .collect(Collectors.toList());
+
+        unitOfMeasurementRepository.inactivateUnitOfMeasurement(unitOfMeasurementNames);
+    }
+
+    public void activateUnitOfMeasurement(UnitOfMeasurementListDto unitOfMeasurementListDto){
+        List<String> unitOfMeasurementNames = unitOfMeasurementListDto
+                .getUnitOfMeasurementListDto()
+                .stream()
+                .map((unitOfMeasurementDto) -> unitOfMeasurementDto.getUnitOfMeasurementName())
+                .collect(Collectors.toList());
+
+        unitOfMeasurementRepository.activateUnitOfMeasurement(unitOfMeasurementNames);
     }
 
     public void updateUnitOfMeasurement(UnitOfMeasurementDto unitOfMeasurementDto, Long id) {
