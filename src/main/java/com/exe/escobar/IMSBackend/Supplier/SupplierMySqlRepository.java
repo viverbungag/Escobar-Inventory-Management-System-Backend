@@ -21,7 +21,21 @@ public interface SupplierMySqlRepository extends SupplierDao, JpaRepository<Supp
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active = true",
             nativeQuery = true)
-    List<Supplier> getAllActiveSuppliers();
+    Page<Supplier> getAllActiveSuppliers(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active = false",
+            nativeQuery = true)
+    Page<Supplier> getAllInactiveSuppliers(Pageable pageable);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=false WHERE supplier_name IN :supplierNames",
+            nativeQuery = true)
+    void inactivateSupplier(@Param("supplierNames") List<String> supplierNames);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=true WHERE supplier_name IN :supplierNames",
+            nativeQuery = true)
+    void activateSupplier(@Param("supplierNames") List<String> supplierNames);
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +

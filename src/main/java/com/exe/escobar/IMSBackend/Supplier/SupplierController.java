@@ -3,10 +3,8 @@ package com.exe.escobar.IMSBackend.Supplier;
 
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,14 +15,29 @@ public class SupplierController {
     @Autowired
     SupplierService supplierService;
 
-    @GetMapping
+    @PostMapping
     public Map<String, Object> getAllSuppliers(@RequestBody PaginationDto paginationDto){
         return supplierService.getAllSuppliers(paginationDto);
     }
 
-    @GetMapping("/active")
-    public List<SupplierDto> getAllActiveSuppliers(){
-        return supplierService.getAllActiveSuppliers();
+    @PostMapping("/active")
+    public Map<String, Object> getAllActiveSuppliers(@RequestBody PaginationDto paginationDto){
+        return supplierService.getAllActiveSuppliers(paginationDto);
+    }
+
+    @PostMapping("/inactive")
+    public Map<String, Object> getAllInactiveSuppliers(@RequestBody PaginationDto paginationDto){
+        return supplierService.getAllInactiveSuppliers(paginationDto);
+    }
+
+    @PostMapping("/activate")
+    public void activateSupplier(@RequestBody SupplierListDto supplierListDto){
+        supplierService.activateSupplier(supplierListDto);
+    }
+
+    @PostMapping("/inactivate")
+    public void inactivateSupplier(@RequestBody SupplierListDto supplierListDto){
+        supplierService.inactivateSupplier(supplierListDto);
     }
 
     @PostMapping("/add")

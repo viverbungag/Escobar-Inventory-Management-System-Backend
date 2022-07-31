@@ -2,6 +2,8 @@ package com.exe.escobar.IMSBackend.Supplier;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,9 +21,15 @@ public interface SupplierDao {
                         String supplierContactPerson,
                         Boolean isActive);
 
-    List<Supplier> getAllActiveSuppliers();
-
     Optional<Supplier> getSupplierById(Long supplierId);
 
     Optional<Supplier> getSupplierByName(String supplierName);
+
+    Page<Supplier> getAllActiveSuppliers(Pageable pageable);
+
+    Page<Supplier> getAllInactiveSuppliers(Pageable pageable);
+
+    void inactivateSupplier(List<String> supplierNames);
+
+    void activateSupplier(List<String> supplierNames);
 }

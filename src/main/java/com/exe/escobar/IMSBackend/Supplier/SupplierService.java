@@ -1,6 +1,5 @@
 package com.exe.escobar.IMSBackend.Supplier;
 
-import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNameIsExistingException;
 import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNameIsNullException;
@@ -54,13 +53,14 @@ public class SupplierService {
                 return Sort.by("supplier_contact_number");
             case "Contact Person":
                 return Sort.by("supplier_contact_person");
+            case "None":
+                return Sort.by("supplier_id");
             default:
                 return Sort.unsorted();
         }
     }
 
-
-    public Map<String, Object> getAllSuppliers(PaginationDto paginationDto) {
+    private Pageable initializePageable(PaginationDto paginationDto){
         int pageNo = paginationDto.getPageNo();
         int pageSize = paginationDto.getPageSize();
         Boolean isAscending = paginationDto.getIsAscending();
@@ -71,34 +71,90 @@ public class SupplierService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
 
-        Page<Supplier> supplierPage = supplierRepository
-                .getAllSuppliers(pageable);
+        return pageable;
+    }
 
+    private Map<String, Object> initializeSupplierWithPageDetails(Page<Supplier> supplierPage, PaginationDto paginationDto){
+        Integer pageNo = paginationDto.getPageNo();
         Integer totalPages = supplierPage.getTotalPages();
+        Long totalCount = supplierPage.getTotalElements();
 
-        Map<String, Object> suppliersWithPageDetails = new HashMap<>();
+        Map<String, Object> supplierWithPageDetails = new HashMap<>();
 
-        suppliersWithPageDetails.put("contents",
+        if (pageNo < 1 || pageNo > totalPages){
+            supplierWithPageDetails.put("contents", new ArrayList<>());
+            supplierWithPageDetails.put("totalPages", 0);
+            supplierWithPageDetails.put("totalCount", 0);
+            return supplierWithPageDetails;
+        }
+
+        supplierWithPageDetails.put("contents",
                 supplierPage
                         .getContent()
                         .stream()
-                        .map((Supplier supplier) -> convertEntityToDto(supplier))
+                        .map((Supplier supplier)-> convertEntityToDto(supplier))
                         .collect(Collectors.toList()));
 
-        suppliersWithPageDetails.put("totalPages", totalPages);
+        supplierWithPageDetails.put("totalPages", totalPages);
+        supplierWithPageDetails.put("totalCount", totalCount);
 
-        if (pageNo < 1 || pageNo > totalPages){
-            throw new PageOutOfBoundsException(pageNo);
-        }
-
-        return suppliersWithPageDetails;
+        return supplierWithPageDetails;
     }
+
+
+    public Map<String, Object> getAllSuppliers(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supplier> supplierPage = supplierRepository
+                .getAllSuppliers(pageable);
+
+        return initializeSupplierWithPageDetails(supplierPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllActiveSuppliers(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supplier> supplierPage = supplierRepository
+                .getAllActiveSuppliers(pageable);
+
+        return initializeSupplierWithPageDetails(supplierPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllInactiveSuppliers(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supplier> supplierPage = supplierRepository
+                .getAllInactiveSuppliers(pageable);
+
+        return initializeSupplierWithPageDetails(supplierPage, paginationDto);
+    }
+
+    public void inactivateSupplier(SupplierListDto supplierListDto){
+        List<String> supplierNames = supplierListDto
+                .getSupplierListDto()
+                .stream()
+                .map((supplierDto) -> supplierDto.getSupplierName())
+                .collect(Collectors.toList());
+
+        supplierRepository.inactivateSupplier(supplierNames);
+    }
+    public void activateSupplier(SupplierListDto supplierListDto){
+        List<String> supplierNames = supplierListDto
+                .getSupplierListDto()
+                .stream()
+                .map((supplierDto) -> supplierDto.getSupplierName())
+                .collect(Collectors.toList());
+
+        supplierRepository.activateSupplier(supplierNames);
+    }
+
 
     public void addSupplier(SupplierDto supplierDto) {
         String name = supplierDto.getSupplierName();
 
         Optional<Supplier> supplierOptional =  supplierRepository
                 .getSupplierByName(name);
+
+        if (name == null || name.length() <= 0){
+            throw new SupplierNameIsNullException();
+        }
 
         if (supplierOptional.isPresent()){
             throw new SupplierNameIsExistingException(name);
@@ -127,7 +183,6 @@ public class SupplierService {
             throw new SupplierNameIsNullException();
         }
 
-
         if (!Objects.equals(supplier.getSupplierName(), name)){
 
             Optional<Supplier> supplierOptional =  supplierRepository
@@ -140,18 +195,10 @@ public class SupplierService {
             supplier.setSupplierName(name);
         }
 
-
         supplier.setSupplierAddress(address);
         supplier.setSupplierContactNumber(contactNumber);
         supplier.setSupplierContactPerson(contactPerson);
         supplier.setIsActive(active);
 
-    }
-
-    public List<SupplierDto> getAllActiveSuppliers() {
-        return supplierRepository.getAllActiveSuppliers()
-                .stream()
-                .map((Supplier supplier)-> convertEntityToDto(supplier))
-                .collect(Collectors.toList());
     }
 }
