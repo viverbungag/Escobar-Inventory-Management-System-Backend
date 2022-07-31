@@ -16,6 +16,11 @@ public class SupplyCategoryController {
     @Autowired
     SupplyCategoryService supplyCategoryService;
 
+    @GetMapping
+    public List<String> getAllActiveSupplyCategoryNames(){
+        return supplyCategoryService.getAllActiveSupplyCategoryNames();
+    }
+
     @PostMapping
     public Map<String, Object> getAllSupplyCategories(@RequestBody PaginationDto paginationDto){
         return supplyCategoryService.getAllSupplyCategories(paginationDto);

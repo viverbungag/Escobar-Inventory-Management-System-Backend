@@ -19,8 +19,13 @@ public class SupplyDto {
     private Double supplyQuantity;
     private Double minimumQuantity;
     private Boolean inMinimumQuantity;
-    private Supplier supplier;
-    private UnitOfMeasurement unitOfMeasurement;
-    private SupplyCategory supplyCategory;
+    private String supplierName;
+    private String unitOfMeasurementName;
+    private String supplyCategoryName;
     private Boolean isActive;
+
+    public Boolean getInMinimumQuantity() {
+        return supplyQuantity <= minimumQuantity;
+    }
+
 }

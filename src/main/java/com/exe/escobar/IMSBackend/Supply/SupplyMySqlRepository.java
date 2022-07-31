@@ -22,15 +22,40 @@ public interface SupplyMySqlRepository extends SupplyDao, JpaRepository<Supply, 
             nativeQuery = true)
     Page<Supply> getAllPagedSupplies(Pageable pageable);
 
+    @Query(value = "SELECT * FROM #{#entityName} AS supply" +
+            " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
+            " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
+            " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id WHERE supply.is_active=true",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true",
+            nativeQuery = true)
+    Page<Supply> getAllActivePagedSupplies(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} AS supply" +
+            " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
+            " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
+            " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id WHERE supply.is_active=false",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true",
+            nativeQuery = true)
+    Page<Supply> getAllInactivePagedSupplies(Pageable pageable);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=false WHERE supply_name IN :supplyNames",
+            nativeQuery = true)
+    void inactivateSupply(@Param("supplyNames") List<String> supplyNames);
+
+    @Modifying
+    @Query(value = "UPDATE #{#entityName} SET is_active=true WHERE supply_name IN :supplyNames",
+            nativeQuery = true)
+    void activateSupply(@Param("supplyNames") List<String> supplyNames);
+
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
-            "(supply_name, supply_quantity, minimum_quantity, in_minimum_quantity, supplier_id, unit_of_measurement_id, supply_category_id, is_active) " +
-            "VALUES (:supplyName, :supplyQuantity, :minimumQuantity, :inMinimumQuantity, :supplierId, :unitOfMeasurementId, :supplyCategoryId, :isActive)",
+            "(supply_name, supply_quantity, minimum_quantity, supplier_id, unit_of_measurement_id, supply_category_id, is_active) " +
+            "VALUES (:supplyName, :supplyQuantity, :minimumQuantity, :supplierId, :unitOfMeasurementId, :supplyCategoryId, :isActive)",
             nativeQuery = true)
     void insertSupply(@Param("supplyName")String supplyName,
                       @Param("supplyQuantity")Double supplyQuantity,
                       @Param("minimumQuantity")Double minimumQuantity,
-                      @Param("inMinimumQuantity")Boolean inMinimumQuantity,
                       @Param("supplierId")Long supplierId,
                       @Param("unitOfMeasurementId")Long unitOfMeasurementId,
                       @Param("supplyCategoryId")Long supplyCategoryId,

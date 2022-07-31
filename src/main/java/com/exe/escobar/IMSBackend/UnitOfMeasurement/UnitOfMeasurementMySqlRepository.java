@@ -20,6 +20,10 @@ public interface UnitOfMeasurementMySqlRepository extends UnitOfMeasurementDao, 
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
             nativeQuery = true)
+    List<UnitOfMeasurement> getAllActiveUnitOfMeasurementsList();
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
+            nativeQuery = true)
     Page<UnitOfMeasurement> getAllActiveUnitOfMeasurements(Pageable pageable);
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=false",

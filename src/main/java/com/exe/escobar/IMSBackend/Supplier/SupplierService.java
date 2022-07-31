@@ -110,6 +110,14 @@ public class SupplierService {
         return initializeSupplierWithPageDetails(supplierPage, paginationDto);
     }
 
+    public List<String> getAllActiveSupplierNames(){
+        return supplierRepository
+                .getAllActiveSupplierList()
+                .stream()
+                .map((Supplier supplier)-> supplier.getSupplierName())
+                .collect(Collectors.toList());
+    }
+
     public Map<String, Object> getAllActiveSuppliers(PaginationDto paginationDto) {
         Pageable pageable = initializePageable(paginationDto);
         Page<Supplier> supplierPage = supplierRepository

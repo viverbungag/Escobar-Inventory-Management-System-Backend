@@ -36,8 +36,7 @@ public class Supply {
     @Column(name = "minimum_quantity")
     private Double minimumQuantity;
 
-    @NonNull
-    @Column(name = "in_minimum_quantity")
+    @Transient
     private Boolean inMinimumQuantity;
 
     @NonNull
@@ -58,4 +57,9 @@ public class Supply {
     @NonNull
     @Column(name = "is_active")
     private Boolean isActive;
+
+    public Boolean getInMinimumQuantity() {
+        return supplyQuantity <= minimumQuantity;
+    }
+
 }

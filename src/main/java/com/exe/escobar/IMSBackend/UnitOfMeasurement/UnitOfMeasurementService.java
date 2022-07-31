@@ -108,6 +108,14 @@ public class UnitOfMeasurementService {
         return initializeUnitOfMeasurementWithPageDetails(unitOfMeasurementPage, paginationDto);
     }
 
+    public List<String> getAllActiveUnitOfMeasurementNames(){
+        return unitOfMeasurementRepository
+                .getAllActiveUnitOfMeasurementsList()
+                .stream()
+                .map((UnitOfMeasurement unitOfMeasurement)-> unitOfMeasurement.getUnitOfMeasurementName())
+                .collect(Collectors.toList());
+    }
+
     public Map<String, Object> getAllActiveUnitOfMeasurements(PaginationDto paginationDto) {
         Pageable pageable = initializePageable(paginationDto);
         Page<UnitOfMeasurement> unitOfMeasurementPage = unitOfMeasurementRepository

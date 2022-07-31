@@ -105,6 +105,14 @@ public class SupplyCategoryService {
         return initializeSupplyCategoryWithPageDetails(supplyCategoryPage, paginationDto);
     }
 
+    public List<String> getAllActiveSupplyCategoryNames(){
+        return supplyCategoryRepository
+                .getAllActiveSupplyCategoriesList()
+                .stream()
+                .map((SupplyCategory supplyCategory)-> supplyCategory.getSupplyCategoryName())
+                .collect(Collectors.toList());
+    }
+
     public Map<String, Object> getAllActiveSupplyCategories(PaginationDto paginationDto){
         Pageable pageable = initializePageable(paginationDto);
         Page<SupplyCategory> supplyCategoryPage = supplyCategoryRepository

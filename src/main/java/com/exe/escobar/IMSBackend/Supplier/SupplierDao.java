@@ -1,5 +1,6 @@
 package com.exe.escobar.IMSBackend.Supplier;
 
+import com.exe.escobar.IMSBackend.SupplyCategory.SupplyCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,4 +33,7 @@ public interface SupplierDao {
     void inactivateSupplier(List<String> supplierNames);
 
     void activateSupplier(List<String> supplierNames);
+
+    List<Supplier> getAllActiveSupplierList();
+
 }

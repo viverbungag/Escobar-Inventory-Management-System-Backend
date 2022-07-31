@@ -31,4 +31,6 @@ public interface UnitOfMeasurementDao {
 
     void activateUnitOfMeasurement(List<String> unitOfMeasurementNames);
 
+    List<UnitOfMeasurement> getAllActiveUnitOfMeasurementsList();
+
 }

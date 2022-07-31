@@ -1,10 +1,12 @@
 package com.exe.escobar.IMSBackend.Supply;
 
+import com.exe.escobar.IMSBackend.MenuCategory.MenuCategoryListDto;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -14,9 +16,29 @@ public class SupplyController {
     @Autowired
     SupplyService supplyService;
 
-    @GetMapping
+    @PostMapping
     public Map<String, Object> getAllSupplies(@RequestBody PaginationDto paginationDto){
         return supplyService.getAllSupplies(paginationDto);
+    }
+
+    @PostMapping("/active")
+    public Map<String, Object> getAllActiveSupplies(@RequestBody PaginationDto paginationDto){
+        return supplyService.getAllActiveSupplies(paginationDto);
+    }
+
+    @PostMapping("/inactive")
+    public Map<String, Object> getAllInactiveSupplies(@RequestBody PaginationDto paginationDto){
+        return supplyService.getAllInactiveSupplies(paginationDto);
+    }
+
+    @PostMapping("/activate")
+    public void activateMenuCategory(@RequestBody SupplyListDto supplyListDto){
+        supplyService.activateSupply(supplyListDto);
+    }
+
+    @PostMapping("/inactivate")
+    public void inactivateMenuCategory(@RequestBody SupplyListDto supplyListDto){
+        supplyService.inactivateSupply(supplyListDto);
     }
 
     @PostMapping("/add")

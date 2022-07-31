@@ -17,6 +17,11 @@ public class UnitOfMeasurementController {
     @Autowired
     UnitOfMeasurementService unitOfMeasurementService;
 
+    @GetMapping
+    public List<String> getAllUnitOfMeasurementNames(){
+        return unitOfMeasurementService.getAllActiveUnitOfMeasurementNames();
+    }
+
     @PostMapping
     public Map<String, Object> getAllUnitOfMeasurement(@RequestBody PaginationDto paginationDto){
         return unitOfMeasurementService.getAllUnitOfMeasurements(paginationDto);

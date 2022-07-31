@@ -28,4 +28,6 @@ public interface SupplyCategoryDao {
     void inactivateSupplyCategory(List<String> supplyCategoryNames);
 
     void activateSupplyCategory(List<String> supplyCategoryNames);
+
+    List<SupplyCategory> getAllActiveSupplyCategoriesList();
 }

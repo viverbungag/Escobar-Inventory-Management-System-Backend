@@ -1,13 +1,16 @@
 package com.exe.escobar.IMSBackend.Supply;
 
-import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
+import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNotFoundException;
 import com.exe.escobar.IMSBackend.Supplier.Supplier;
-import com.exe.escobar.IMSBackend.Supply.Exceptions.SupplyNameIsExistingException;
-import com.exe.escobar.IMSBackend.Supply.Exceptions.SupplyNameIsNullException;
-import com.exe.escobar.IMSBackend.Supply.Exceptions.SupplyNotFoundException;
+import com.exe.escobar.IMSBackend.Supplier.SupplierDao;
+import com.exe.escobar.IMSBackend.Supply.Exceptions.*;
+import com.exe.escobar.IMSBackend.SupplyCategory.Exceptions.SupplyCategoryNotFoundException;
 import com.exe.escobar.IMSBackend.SupplyCategory.SupplyCategory;
+import com.exe.escobar.IMSBackend.SupplyCategory.SupplyCategoryDao;
+import com.exe.escobar.IMSBackend.UnitOfMeasurement.Exceptions.UnitOfMeasurementNotFoundException;
 import com.exe.escobar.IMSBackend.UnitOfMeasurement.UnitOfMeasurement;
+import com.exe.escobar.IMSBackend.UnitOfMeasurement.UnitOfMeasurementDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -17,12 +20,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.List;
 
 
 @Service
@@ -33,6 +32,18 @@ public class SupplyService {
     @Qualifier("supply_mysql")
     SupplyDao supplyRepository;
 
+    @Autowired
+    @Qualifier("supplyCategory_mysql")
+    SupplyCategoryDao supplyCategoryRepository;
+
+    @Autowired
+    @Qualifier("supplier_mysql")
+    SupplierDao supplierRepository;
+
+    @Autowired
+    @Qualifier("unitOfMeasurement_mysql")
+    UnitOfMeasurementDao unitOfMeasurementRepository;
+
     private SupplyDto convertEntityToDto(Supply supply){
         return new SupplyDto(
                 supply.getSupplyId(),
@@ -40,9 +51,9 @@ public class SupplyService {
                 supply.getSupplyQuantity(),
                 supply.getMinimumQuantity(),
                 supply.getInMinimumQuantity(),
-                supply.getSupplier(),
-                supply.getUnitOfMeasurement(),
-                supply.getSupplyCategory(),
+                supply.getSupplier().getSupplierName(),
+                supply.getUnitOfMeasurement().getUnitOfMeasurementName(),
+                supply.getSupplyCategory().getSupplyCategoryName(),
                 supply.getIsActive()
         );
     }
@@ -66,9 +77,6 @@ public class SupplyService {
             case "Minimum Quantity":
                 return Sort.by("minimum_quantity");
 
-            case "In Minimum Quantity":
-                return Sort.by("in_minimum_quantity");
-
             case "Supplier":
                 return Sort.by("supplier.supplier_name");
 
@@ -78,12 +86,15 @@ public class SupplyService {
             case "Supply Category":
                 return Sort.by("supply_category.supply_category_name");
 
+            case "None":
+                return Sort.by("supply_id");
+
             default:
                 return Sort.unsorted();
         }
     }
 
-    public Map<String, Object> getAllSupplies(PaginationDto paginationDto) {
+    private Pageable initializePageable(PaginationDto paginationDto){
         int pageNo = paginationDto.getPageNo();
         int pageSize = paginationDto.getPageSize();
         Boolean isAscending = paginationDto.getIsAscending();
@@ -94,49 +105,156 @@ public class SupplyService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, finalSort);
 
-        Page<Supply> supplyPage = supplyRepository
-                .getAllPagedSupplies(pageable);
+        return pageable;
+    }
 
+    private Map<String, Object> initializeSupplyWithPageDetails(Page<Supply> supplyPage, PaginationDto paginationDto){
+        Integer pageNo = paginationDto.getPageNo();
         Integer totalPages = supplyPage.getTotalPages();
+        Long totalCount = supplyPage.getTotalElements();
 
-        Map<String, Object> suppliesWithPageDetails = new HashMap<>();
+        Map<String, Object> menuCategoryWithPageDetails = new HashMap<>();
 
-        suppliesWithPageDetails.put("contents",
+        if (pageNo < 1 || pageNo > totalPages){
+            menuCategoryWithPageDetails.put("contents", new ArrayList<>());
+            menuCategoryWithPageDetails.put("totalPages", 0);
+            menuCategoryWithPageDetails.put("totalCount", 0);
+            return menuCategoryWithPageDetails;
+        }
+
+        menuCategoryWithPageDetails.put("contents",
                 supplyPage
                         .getContent()
                         .stream()
-                        .map((Supply supply) -> convertEntityToDto(supply))
+                        .map((Supply supply)-> convertEntityToDto(supply))
                         .collect(Collectors.toList()));
 
-        suppliesWithPageDetails.put("totalPages", totalPages);
+        menuCategoryWithPageDetails.put("totalPages", totalPages);
+        menuCategoryWithPageDetails.put("totalCount", totalCount);
 
-        if (pageNo < 1 || pageNo > totalPages){
-            throw new PageOutOfBoundsException(pageNo);
+
+
+        return menuCategoryWithPageDetails;
+    }
+
+    public Map<String, Object> getAllSupplies(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supply> supplyPage = supplyRepository
+                .getAllPagedSupplies(pageable);
+
+
+        return initializeSupplyWithPageDetails(supplyPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllActiveSupplies(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supply> supplyPage = supplyRepository
+                .getAllActivePagedSupplies(pageable);
+
+
+        return initializeSupplyWithPageDetails(supplyPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllInactiveSupplies(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supply> supplyPage = supplyRepository
+                .getAllInactivePagedSupplies(pageable);
+
+
+        return initializeSupplyWithPageDetails(supplyPage, paginationDto);
+    }
+
+    public void validateSupply(String name,
+                               Double minimumQuantity,
+                               String supplierName,
+                               String supplyCategoryName,
+                               String unitOfMeasurementName){
+
+        if (name == null || name.length() <= 0){
+            throw new SupplyNameIsNullException();
         }
 
-        return suppliesWithPageDetails;
+        if (minimumQuantity == null || minimumQuantity < 0){
+            throw new SupplyMinimumQuantityIsLessThanZeroException();
+        }
+
+        if (supplierName == null || supplierName.length() <= 0){
+            throw new SupplySupplierIsNullException();
+        }
+
+        if (supplyCategoryName == null || supplyCategoryName.length() <= 0){
+            throw new SupplySupplyCategoryIsNullException();
+        }
+
+        if (unitOfMeasurementName == null || unitOfMeasurementName.length() <= 0){
+            throw new SupplyUnitOfMeasurementIsNullException();
+        }
+
+
     }
 
     public void addSupply(SupplyDto supplyDto){
         String name = supplyDto.getSupplyName();
+        Double minimumQuantity = supplyDto.getMinimumQuantity();
+        String supplierName = supplyDto.getSupplierName();
+        String supplyCategoryName = supplyDto.getSupplyCategoryName();
+        String unitOfMeasurementName = supplyDto.getUnitOfMeasurementName();
 
         Optional<Supply> supplyOptional = supplyRepository
                 .getSupplyByName(name);
+
+        validateSupply(name, minimumQuantity, supplierName, supplyCategoryName, unitOfMeasurementName);
+
 
         if (supplyOptional.isPresent()){
             throw new SupplyNameIsExistingException(name);
         }
 
+        Supplier supplier = supplierRepository
+                .getSupplierByName(supplierName)
+                .orElseThrow(()->
+                        new SupplierNotFoundException(supplierName));
+
+        UnitOfMeasurement unitOfMeasurement = unitOfMeasurementRepository
+                .getUnitOfMeasurementByName(unitOfMeasurementName)
+                .orElseThrow(()->
+                        new UnitOfMeasurementNotFoundException(unitOfMeasurementName));
+
+        SupplyCategory supplyCategory = supplyCategoryRepository
+                .getSupplyCategoryByName(supplyCategoryName)
+                .orElseThrow(()->
+                        new SupplyCategoryNotFoundException(supplyCategoryName));
+
+
         supplyRepository.insertSupply(
                 supplyDto.getSupplyName(),
                 supplyDto.getSupplyQuantity(),
-                supplyDto.getMinimumQuantity(),
-                supplyDto.getInMinimumQuantity(),
-                supplyDto.getSupplier().getSupplierId(),
-                supplyDto.getUnitOfMeasurement().getUnitOfMeasurementId(),
-                supplyDto.getSupplyCategory().getSupplyCategoryId(),
+                minimumQuantity,
+                supplier.getSupplierId(),
+                unitOfMeasurement.getUnitOfMeasurementId(),
+                supplyCategory.getSupplyCategoryId(),
                 supplyDto.getIsActive()
         );
+    }
+
+    public void inactivateSupply(SupplyListDto supplyListDto){
+        List<String> supplyNames = supplyListDto
+                .getSupplyListDto()
+                .stream()
+                .map((supplyDto) -> supplyDto.getSupplyName())
+                .collect(Collectors.toList());
+
+        supplyRepository.inactivateSupply(supplyNames);
+    }
+
+    public void activateSupply(SupplyListDto supplyListDto){
+        List<String> supplyNames = supplyListDto
+                .getSupplyListDto()
+                .stream()
+                .map((supplyDto) -> supplyDto.getSupplyName())
+                .collect(Collectors.toList());
+
+        supplyRepository.activateSupply(supplyNames);
     }
 
     public void updateSupply(SupplyDto supplyDto, Long id) {
@@ -146,15 +264,27 @@ public class SupplyService {
         String name = supplyDto.getSupplyName();
         Double quantity = supplyDto.getSupplyQuantity();
         Double minimumQuantity = supplyDto.getMinimumQuantity();
-        Boolean inMinimumQuantity = supplyDto.getInMinimumQuantity();
-        Supplier supplier = supplyDto.getSupplier();
-        UnitOfMeasurement unitOfMeasurement = supplyDto.getUnitOfMeasurement();
-        SupplyCategory supplyCategory = supplyDto.getSupplyCategory();
+        String supplierName = supplyDto.getSupplierName();
+        String supplyCategoryName = supplyDto.getSupplyCategoryName();
+        String unitOfMeasurementName = supplyDto.getUnitOfMeasurementName();
         Boolean active = supplyDto.getIsActive();
 
-        if (name == null || name.length() <= 0){
-            throw new SupplyNameIsNullException();
-        }
+        Supplier supplier = supplierRepository
+                .getSupplierByName(supplyDto.getSupplierName())
+                .orElseThrow(()->
+                        new SupplierNotFoundException(supplyDto.getSupplierName()));
+
+        UnitOfMeasurement unitOfMeasurement = unitOfMeasurementRepository
+                .getUnitOfMeasurementByName(supplyDto.getUnitOfMeasurementName())
+                .orElseThrow(()->
+                        new UnitOfMeasurementNotFoundException(supplyDto.getUnitOfMeasurementName()));
+
+        SupplyCategory supplyCategory = supplyCategoryRepository
+                .getSupplyCategoryByName(supplyDto.getSupplyCategoryName())
+                .orElseThrow(()->
+                        new SupplyCategoryNotFoundException(supplyDto.getSupplyCategoryName()));
+
+        validateSupply(name, minimumQuantity, supplierName, supplyCategoryName, unitOfMeasurementName);
 
         if (!Objects.equals(supply.getSupplyName(), name)){
 
@@ -170,7 +300,6 @@ public class SupplyService {
 
         supply.setSupplyQuantity(quantity);
         supply.setMinimumQuantity(minimumQuantity);
-        supply.setInMinimumQuantity(inMinimumQuantity);
         supply.setSupplier(supplier);
         supply.setUnitOfMeasurement(unitOfMeasurement);
         supply.setSupplyCategory(supplyCategory);

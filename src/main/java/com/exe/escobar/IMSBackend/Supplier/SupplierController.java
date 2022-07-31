@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -14,6 +15,11 @@ public class SupplierController {
 
     @Autowired
     SupplierService supplierService;
+
+    @GetMapping
+    public List<String> getAllActiveSupplyCategoryNames(){
+        return supplierService.getAllActiveSupplierNames();
+    }
 
     @PostMapping
     public Map<String, Object> getAllSuppliers(@RequestBody PaginationDto paginationDto){

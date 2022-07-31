@@ -128,7 +128,6 @@ CREATE TABLE IF NOT EXISTS supply(
     unit_of_measurement_id BIGINT,
     supply_category_id BIGINT,
     minimum_quantity DECIMAL(10, 2),
-    in_minimum_quantity BOOLEAN,
     is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (supply_id),
     FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id),

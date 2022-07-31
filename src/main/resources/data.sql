@@ -67,22 +67,22 @@ INSERT INTO supplier(supplier_name, supplier_address, supplier_contact_number, s
 INSERT INTO supplier(supplier_name, supplier_address, supplier_contact_number, supplier_contact_person, is_active) VALUES ('Supplier 15', 'Address 15', '09273173115', 'Person 15', true);
 INSERT INTO supplier(supplier_name, supplier_address, supplier_contact_number, supplier_contact_person, is_active) VALUES ('Supplier 16', 'Address 16', '09273173116', 'Person 16', true);
 
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 1', 0, 1, 1, 1, 11, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 2', 0, 2, 2, 2, 12, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 3', 0, 3, 3, 3, 13, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 4', 0, 4, 4, 4, 14, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 5', 0, 5, 5, 5, 15, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 6', 0, 6, 6, 6, 16, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 7', 0, 7, 7, 7, 17, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 8', 0, 8, 8, 8, 18, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 9', 0, 9, 9, 9, 19, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 10', 0, 10, 10, 10, 20, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 11', 0, 11, 11, 11, 21, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 12', 0, 12, 12, 12, 22, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 13', 0, 13, 13, 13, 23, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 14', 0, 14, 14, 14, 24, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 15', 0, 15, 15, 15, 25, false, true);
-INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, in_minimum_quantity, is_active) VALUES ('Supply 16', 0, 16, 16, 16, 26, false, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 1', 0, 1, 1, 1, 11, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 2', 0, 2, 2, 2, 12, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 3', 0, 3, 3, 3, 13, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 4', 0, 4, 4, 4, 14, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 5', 0, 5, 5, 5, 15, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 6', 0, 6, 6, 6, 16, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 7', 0, 7, 7, 7, 17, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 8', 0, 8, 8, 8, 18, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 9', 0, 9, 9, 9, 19, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 10', 0, 10, 10, 10, 20, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 11', 0, 11, 11, 11, 21, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 12', 0, 12, 12, 12, 22, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 13', 0, 13, 13, 13, 23, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 14', 0, 14, 14, 14, 24, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 15', 0, 15, 15, 15, 25, true);
+INSERT INTO supply(supply_name, supply_quantity, supplier_id, unit_of_measurement_id, supply_category_id, minimum_quantity, is_active) VALUES ('Supply 16', 0, 16, 16, 16, 26, true);
 
 INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 1', 10, 1, 20, true);
 INSERT INTO menu(menu_name, menu_price, menu_category_id, number_of_servings_left, is_active) VALUES ('Menu 2', 11, 2, 20, true);

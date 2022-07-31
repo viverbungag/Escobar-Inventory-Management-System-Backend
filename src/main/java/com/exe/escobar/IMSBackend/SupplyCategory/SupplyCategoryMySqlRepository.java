@@ -20,6 +20,10 @@ public interface SupplyCategoryMySqlRepository extends SupplyCategoryDao, JpaRep
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
             nativeQuery = true)
+    List<SupplyCategory> getAllActiveSupplyCategoriesList();
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
+            nativeQuery = true)
     Page<SupplyCategory> getAllActiveSupplyCategories(Pageable pageable);
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=false",
