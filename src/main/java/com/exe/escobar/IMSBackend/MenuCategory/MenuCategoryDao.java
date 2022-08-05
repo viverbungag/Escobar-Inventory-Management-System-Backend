@@ -27,4 +27,7 @@ public interface MenuCategoryDao {
     void inactivateMenuCategory(List<String> menuCategoryNames);
 
     void activateMenuCategory(List<String> menuCategoryNames);
+
+    List<MenuCategory> getAllActiveMenuCategoriesList();
+
 }

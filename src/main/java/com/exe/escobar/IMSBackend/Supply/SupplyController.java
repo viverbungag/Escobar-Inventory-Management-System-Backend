@@ -1,6 +1,5 @@
 package com.exe.escobar.IMSBackend.Supply;
 
-import com.exe.escobar.IMSBackend.MenuCategory.MenuCategoryListDto;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,11 @@ public class SupplyController {
 
     @Autowired
     SupplyService supplyService;
+
+    @GetMapping
+    public List<SupplyDtoV2> getAllSupplies(){
+        return supplyService.getAllActiveSuppliesWithoutPagination();
+    }
 
     @PostMapping
     public Map<String, Object> getAllSupplies(@RequestBody PaginationDto paginationDto){

@@ -20,6 +20,10 @@ public interface MenuCategoryMySqlRepository extends MenuCategoryDao, JpaReposit
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
             nativeQuery = true)
+    List<MenuCategory> getAllActiveMenuCategoriesList();
+
+    @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=true",
+            nativeQuery = true)
     Page<MenuCategory> getAllActiveMenuCategories(Pageable pageable);
 
     @Query(value = "SELECT * FROM #{#entityName} WHERE is_active=false",

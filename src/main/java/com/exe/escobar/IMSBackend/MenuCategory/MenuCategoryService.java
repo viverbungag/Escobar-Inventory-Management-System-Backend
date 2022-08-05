@@ -5,6 +5,7 @@ import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNameIsNull
 import com.exe.escobar.IMSBackend.MenuCategory.Exceptions.MenuCategoryNotFoundException;
 import com.exe.escobar.IMSBackend.Pagination.Exceptions.PageOutOfBoundsException;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
+import com.exe.escobar.IMSBackend.SupplyCategory.SupplyCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -100,6 +101,14 @@ public class MenuCategoryService {
                 .getAllMenuCategories(pageable);
 
         return initializeMenuCategoryWithPageDetails(menuCategoryPage, paginationDto);
+    }
+
+    public List<String> getAllActiveMenuCategoryNames(){
+        return menuCategoryRepository
+                .getAllActiveMenuCategoriesList()
+                .stream()
+                .map((MenuCategory menuCategory)-> menuCategory.getMenuCategoryName())
+                .collect(Collectors.toList());
     }
 
     public Map<String, Object> getAllActiveMenuCategories(PaginationDto paginationDto) {

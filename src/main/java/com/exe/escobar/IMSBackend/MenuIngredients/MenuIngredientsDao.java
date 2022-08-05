@@ -14,4 +14,6 @@ import java.util.Optional;
 public interface MenuIngredientsDao {
 
     Optional<MenuIngredients> getMenuIngredientsById(Long menuIngredientsId);
+    Optional<MenuIngredients> getMenuIngredientsByName(String menuIngredientsName);
+    void deleteAllMenuIngredientsByMenuId(Long menuId);
 }

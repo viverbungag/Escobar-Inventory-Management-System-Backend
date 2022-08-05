@@ -1,6 +1,7 @@
 package com.exe.escobar.IMSBackend.MenuIngredients;
 
 import com.exe.escobar.IMSBackend.Supply.Supply;
+import com.exe.escobar.IMSBackend.UnitOfMeasurement.UnitOfMeasurement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,8 @@ public class MenuIngredientsDto {
 
     private Long menuIngredientsId;
     private String supplyName;
-    private Integer quantity;
+    private Double quantity;
+    private String unitOfMeasurementName;
 
 
 }

@@ -40,13 +40,11 @@ public class Menu {
     @JoinColumn(name = "menu_category_id")
     private MenuCategory menuCategory;
 
-    @OneToMany
-    @JoinTable(name = "menu_ingredients",
-            joinColumns = @JoinColumn(name = "menu_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_ingredients_id"))
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu")
     private List<MenuIngredients> menuIngredients;
 
     @NonNull
+    @Transient
     @Column(name = "number_of_servings_left")
     private Integer numberOfServingsLeft;
 

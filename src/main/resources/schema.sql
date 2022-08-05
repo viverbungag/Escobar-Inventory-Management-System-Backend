@@ -155,7 +155,6 @@ CREATE TABLE IF NOT EXISTS menu(
     menu_name VARCHAR(255) NOT NULL UNIQUE,
     menu_price DECIMAL(10, 2) NOT NULL,
     menu_category_id BIGINT,
-    number_of_servings_left INTEGER,
     is_active BOOLEAN DEFAULT true,
     PRIMARY KEY (menu_id),
     FOREIGN KEY (menu_category_id) REFERENCES menu_category(menu_category_id)
@@ -165,7 +164,7 @@ CREATE TABLE IF NOT EXISTS menu_ingredients(
     menu_ingredients_id BIGINT NOT NULL AUTO_INCREMENT,
     menu_id BIGINT,
     supply_id BIGINT,
-    quantity INTEGER,
+    quantity DECIMAL(10, 2) NOT NULL DEFAULT 0,
     PRIMARY KEY (menu_ingredients_id),
     FOREIGN KEY (menu_id) REFERENCES menu(menu_id),
     FOREIGN KEY (supply_id) REFERENCES supply(supply_id)

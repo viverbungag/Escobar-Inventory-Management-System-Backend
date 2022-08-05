@@ -34,4 +34,6 @@ public interface SupplyDao {
     void inactivateSupply(List<String> supplyNames);
 
     void activateSupply(List<String> supplyNames);
+
+    List<Supply> getAllActiveSuppliesList();
 }

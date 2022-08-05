@@ -58,6 +58,14 @@ public class SupplyService {
         );
     }
 
+    private SupplyDtoV2 convertEntityToDtoV2(Supply supply){
+        return new SupplyDtoV2(
+                supply.getSupplyName(),
+                supply.getUnitOfMeasurement().getUnitOfMeasurementAbbreviation()
+        );
+    }
+
+
     private Sort getSortingMethod(Boolean isAscending, Sort sort){
         if (isAscending){
             return sort.ascending();
@@ -144,6 +152,14 @@ public class SupplyService {
 
 
         return initializeSupplyWithPageDetails(supplyPage, paginationDto);
+    }
+
+    public List<SupplyDtoV2> getAllActiveSuppliesWithoutPagination(){
+        return supplyRepository
+                .getAllActiveSuppliesList()
+                .stream()
+                .map((Supply supply)-> convertEntityToDtoV2(supply))
+                .collect(Collectors.toList());
     }
 
     public Map<String, Object> getAllActiveSupplies(PaginationDto paginationDto) {

@@ -17,6 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Setter
 @ToString
 @EqualsAndHashCode
+@RequiredArgsConstructor
 @Entity(name = "menu_ingredients")
 public class MenuIngredients {
 
@@ -25,9 +26,17 @@ public class MenuIngredients {
     @Column(name = "menu_ingredients_id")
     private Long menuIngredientsId;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @NonNull
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
+    @NonNull
+    @Column(name = "quantity")
+    private Double quantity;
+
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "supply_id")
     private Supply supply;

@@ -28,6 +28,14 @@ public interface SupplyMySqlRepository extends SupplyDao, JpaRepository<Supply, 
             " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id WHERE supply.is_active=true",
             countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true",
             nativeQuery = true)
+    List<Supply> getAllActiveSuppliesList();
+
+    @Query(value = "SELECT * FROM #{#entityName} AS supply" +
+            " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
+            " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
+            " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id WHERE supply.is_active=true",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true",
+            nativeQuery = true)
     Page<Supply> getAllActivePagedSupplies(Pageable pageable);
 
     @Query(value = "SELECT * FROM #{#entityName} AS supply" +

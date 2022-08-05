@@ -17,12 +17,19 @@ public interface MenuDao {
     void insertMenu(String menuName,
                     BigDecimal menuPrice,
                     Long menuCategoryId,
-                    Integer numberOfServingsLeft,
                     Boolean isActive);
 
-    void insertIngredient(Long menuId, Long supplyId, Integer quantity);
+    void insertIngredient(Long menuId, Long supplyId, Double quantity);
 
     Optional<Menu> getMenuById(Long menuId);
 
     Optional<Menu> getMenuByName(String menuName);
+
+    Page<Menu> getAllActiveMenu(Pageable pageable);
+
+    Page<Menu> getAllInactiveMenu(Pageable pageable);
+
+    void inactivateMenu(List<String> menuNames);
+
+    void activateMenu(List<String> menuNames);
 }

@@ -16,6 +16,10 @@ public class MenuCategoryController {
     @Autowired
     MenuCategoryService menuCategoryService;
 
+    @GetMapping
+    public List<String> getAllActiveMenuCategoryNames(){
+        return menuCategoryService.getAllActiveMenuCategoryNames();
+    }
 
     @PostMapping
     public Map<String, Object> getAllMenuCategories(@RequestBody PaginationDto paginationDto){
