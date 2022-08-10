@@ -126,3 +126,11 @@ INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (11, 13, 1);
 INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (12, 14, 1);
 INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (13, 15, 1);
 INSERT INTO menu_ingredients(menu_id, supply_id, quantity) VALUES (14, 16, 1);
+
+INSERT INTO employee(employee_first_name, employee_last_name) VALUES ("Viver", "Bungag");
+INSERT INTO employee(employee_first_name, employee_last_name) VALUES ("Jay", "Tan");
+INSERT INTO employee(employee_first_name, employee_last_name) VALUES ("Julienne", "Panes");
+
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) VALUES (1, '2022-08-10', 1, 5, 1, 20, '2022-09-10');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) VALUES (2, '2022-09-11', 2, 5, 2, 30, '2022-10-11');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) VALUES (3, '2022-10-12', 3, 5, 3, 40, '2022-11-12');

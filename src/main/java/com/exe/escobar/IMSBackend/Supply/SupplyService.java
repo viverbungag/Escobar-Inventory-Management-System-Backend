@@ -121,28 +121,28 @@ public class SupplyService {
         Integer totalPages = supplyPage.getTotalPages();
         Long totalCount = supplyPage.getTotalElements();
 
-        Map<String, Object> menuCategoryWithPageDetails = new HashMap<>();
+        Map<String, Object> supplyWithPageDetails = new HashMap<>();
 
         if (pageNo < 1 || pageNo > totalPages){
-            menuCategoryWithPageDetails.put("contents", new ArrayList<>());
-            menuCategoryWithPageDetails.put("totalPages", 0);
-            menuCategoryWithPageDetails.put("totalCount", 0);
-            return menuCategoryWithPageDetails;
+            supplyWithPageDetails.put("contents", new ArrayList<>());
+            supplyWithPageDetails.put("totalPages", 0);
+            supplyWithPageDetails.put("totalCount", 0);
+            return supplyWithPageDetails;
         }
 
-        menuCategoryWithPageDetails.put("contents",
+        supplyWithPageDetails.put("contents",
                 supplyPage
                         .getContent()
                         .stream()
                         .map((Supply supply)-> convertEntityToDto(supply))
                         .collect(Collectors.toList()));
 
-        menuCategoryWithPageDetails.put("totalPages", totalPages);
-        menuCategoryWithPageDetails.put("totalCount", totalCount);
+        supplyWithPageDetails.put("totalPages", totalPages);
+        supplyWithPageDetails.put("totalCount", totalCount);
 
 
 
-        return menuCategoryWithPageDetails;
+        return supplyWithPageDetails;
     }
 
     public Map<String, Object> getAllSupplies(PaginationDto paginationDto) {

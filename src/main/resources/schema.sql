@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS food_order CASCADE;
 DROP TABLE IF EXISTS customer CASCADE;
 DROP TABLE IF EXISTS menu_ingredients CASCADE;
 DROP TABLE IF EXISTS menu CASCADE;
-DROP TABLE IF EXISTS transactions CASCADE;
+DROP TABLE IF EXISTS transaction CASCADE;
 DROP TABLE IF EXISTS supply CASCADE;
 DROP TABLE IF EXISTS supplier CASCADE;
 DROP TABLE IF EXISTS supply_category CASCADE;
@@ -52,19 +52,19 @@ CREATE TABLE IF NOT EXISTS employee(
     employee_id BIGINT NOT NULL AUTO_INCREMENT,
     employee_first_name VARCHAR(255) NOT NULL,
     employee_last_name VARCHAR(255) NOT NULL,
-    employee_address VARCHAR(255),
-    employee_contact_number INTEGER,
-    date_employed DATE,
-    monthly_wage DECIMAL(10, 2),
-    attendance_per_month_id BIGINT,
-    income_id BIGINT,
-    position_id BIGINT,
-    supperior_employee_id BIGINT,
-    PRIMARY KEY (employee_id),
-    FOREIGN KEY (attendance_per_month_id) REFERENCES employee_attendance(attendance_id),
-    FOREIGN KEY (income_id) REFERENCES employee_income_per_month(income_id),
-    FOREIGN KEY (position_id) REFERENCES employee_position(position_id),
-    CONSTRAINT emp_supperior FOREIGN KEY (supperior_employee_id) REFERENCES employee(employee_id)
+--    employee_address VARCHAR(255),
+--    employee_contact_number INTEGER,
+--    date_employed DATE,
+--    monthly_wage DECIMAL(10, 2),
+--    attendance_per_month_id BIGINT,
+--    income_id BIGINT,
+--    position_id BIGINT,
+--    supperior_employee_id BIGINT,
+    PRIMARY KEY (employee_id)
+--    FOREIGN KEY (attendance_per_month_id) REFERENCES employee_attendance(attendance_id),
+--    FOREIGN KEY (income_id) REFERENCES employee_income_per_month(income_id),
+--    FOREIGN KEY (position_id) REFERENCES employee_position(position_id),
+--    CONSTRAINT emp_supperior FOREIGN KEY (supperior_employee_id) REFERENCES employee(employee_id)
 );
 
 CREATE TABLE IF NOT EXISTS accessible_systems(
@@ -135,19 +135,19 @@ CREATE TABLE IF NOT EXISTS supply(
     FOREIGN KEY (supply_category_id) REFERENCES supply_category(supply_category_id)
 );
 
-CREATE TABLE IF NOT EXISTS transactions(
+CREATE TABLE IF NOT EXISTS transaction(
     transaction_id BIGINT NOT NULL AUTO_INCREMENT,
     transact_by BIGINT,
     transaction_date DATETIME,
     supplier_id BIGINT,
     transaction_supply_quantity DECIMAL(10, 5),
     supply_id BIGINT,
-    supply_per_unit_cost DECIMAL(10, 2),
+    price_per_unit DECIMAL(10, 5),
     expiry_date DATETIME,
-    PRIMARY KEY (transaction_id)
---    FOREIGN KEY (supply_id) REFERENCES supply(supply_id) ON DELETE CASCADE ON UPDATE CASCADE,
---    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ON DELETE CASCADE ON UPDATE CASCADE,
---    FOREIGN KEY (transact_by) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+    PRIMARY KEY (transaction_id),
+    FOREIGN KEY (supply_id) REFERENCES supply(supply_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (transact_by) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS menu(
@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS monthly_transactions(
     transaction_month DATE NOT NULL,
     transaction_id BIGINT,
     PRIMARY KEY (monthly_transaction_id),
-    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (transaction_id) REFERENCES transaction(transaction_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS monthly_income_expenses(
