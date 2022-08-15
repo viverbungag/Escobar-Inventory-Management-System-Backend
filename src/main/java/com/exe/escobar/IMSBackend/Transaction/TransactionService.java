@@ -73,7 +73,7 @@ public class TransactionService {
 
         switch(sortedBy){
             case "Transact By":
-                return Sort.by("employee.employee_last_name");
+                return Sort.by("employee.last_name");
 
             case "Transaction Date":
                 return Sort.by("transaction_date");
