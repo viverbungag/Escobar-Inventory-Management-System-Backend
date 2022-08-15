@@ -26,4 +26,5 @@ public class TransactionDto {
     private String unitOfMeasurementAbbreviation;
     private Double pricePerUnit;
     private LocalDateTime expiryDate;
+    private TransactionType transactionType;
 }

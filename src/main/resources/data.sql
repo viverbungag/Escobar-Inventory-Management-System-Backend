@@ -131,6 +131,6 @@ INSERT INTO employee(employee_first_name, employee_last_name) VALUES ("Viver", "
 INSERT INTO employee(employee_first_name, employee_last_name) VALUES ("Jay", "Tan");
 INSERT INTO employee(employee_first_name, employee_last_name) VALUES ("Julienne", "Panes");
 
-INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) VALUES (1, '2022-08-10', 1, 5, 1, 20, '2022-09-10');
-INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) VALUES (2, '2022-09-11', 2, 5, 2, 30, '2022-10-11');
-INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) VALUES (3, '2022-10-12', 3, 5, 3, 40, '2022-11-12');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (1, '2022-08-10', 1, 5, 1, 20, '2022-09-10', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (2, '2022-09-11', 2, 5, 2, 30, '2022-10-11', 'STOCK_IN');
+INSERT INTO transaction(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) VALUES (3, '2022-10-12', 3, 5, 3, 40, '2022-11-12', 'STOCK_IN');

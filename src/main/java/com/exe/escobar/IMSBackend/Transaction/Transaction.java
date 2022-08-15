@@ -58,4 +58,9 @@ public class Transaction {
     @NonNull
     @Column(name = "expiry_date")
     private LocalDateTime expiryDate;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transaction_type")
+    private TransactionType transactionType;
 }

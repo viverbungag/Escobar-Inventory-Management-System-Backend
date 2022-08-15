@@ -56,7 +56,8 @@ public class TransactionService {
                 transaction.getSupply().getSupplyName(),
                 transaction.getSupply().getUnitOfMeasurement().getUnitOfMeasurementAbbreviation(),
                 transaction.getPricePerUnit(),
-                transaction.getExpiryDate()
+                transaction.getExpiryDate(),
+                transaction.getTransactionType()
         );
     }
 
@@ -153,6 +154,7 @@ public class TransactionService {
         Double quantity = transactionDto.getSupplyQuantity();
         Double pricePerUnit = transactionDto.getPricePerUnit();
         LocalDateTime expiryDate = transactionDto.getExpiryDate();
+        TransactionType transactionType = transactionDto.getTransactionType();
 
         Employee transactBy = employeeRepository
                 .getEmployeeByFirstAndLastName(transactByFirstName, transactByLastName)
@@ -175,7 +177,8 @@ public class TransactionService {
                 quantity,
                 supply.getSupplyId(),
                 pricePerUnit,
-                expiryDate);
+                expiryDate,
+                transactionType.toString());
     }
 
 

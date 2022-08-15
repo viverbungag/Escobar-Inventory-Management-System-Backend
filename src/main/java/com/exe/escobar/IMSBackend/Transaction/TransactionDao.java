@@ -17,5 +17,6 @@ public interface TransactionDao {
                          Double quantity,
                          Long supplyId,
                          Double pricePerUnit,
-                         LocalDateTime expiryDate);
+                         LocalDateTime expiryDate,
+                         String transactionType);
 }

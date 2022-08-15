@@ -19,8 +19,8 @@ public interface TransactionMySqlRepository extends TransactionDao, JpaRepositor
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +
-            "(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date) " +
-            "VALUES (:transactById, :transactionDate, :supplierId, :quantity, :supplyId, :pricePerUnit, :expiryDate)",
+            "(transact_by, transaction_date, supplier_id, transaction_supply_quantity, supply_id, price_per_unit, expiry_date, transaction_type) " +
+            "VALUES (:transactById, :transactionDate, :supplierId, :quantity, :supplyId, :pricePerUnit, :expiryDate, :transactionType)",
             nativeQuery = true)
     void insertTransaction(@Param("transactById") Long transactById,
                            @Param("transactionDate") LocalDateTime transactionDate,
@@ -28,5 +28,6 @@ public interface TransactionMySqlRepository extends TransactionDao, JpaRepositor
                            @Param("quantity") Double quantity,
                            @Param("supplyId") Long supplyId,
                            @Param("pricePerUnit") Double pricePerUnit,
-                           @Param("expiryDate") LocalDateTime expiryDate);
+                           @Param("expiryDate") LocalDateTime expiryDate,
+                           @Param("transactionType") String transactionType);
 }
