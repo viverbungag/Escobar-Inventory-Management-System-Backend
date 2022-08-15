@@ -24,4 +24,9 @@ public class TransactionController {
     public void stockInTransaction(@RequestBody TransactionDto transactionDto){
         transactionService.stockInTransaction(transactionDto);
     }
+
+    @PostMapping("/stock-out")
+    public void stockOutTransaction(@RequestBody TransactionDto transactionDto){
+        transactionService.stockOutTransaction(transactionDto);
+    }
 }

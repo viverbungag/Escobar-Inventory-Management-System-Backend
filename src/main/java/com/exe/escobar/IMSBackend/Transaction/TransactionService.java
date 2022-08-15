@@ -10,6 +10,7 @@ import com.exe.escobar.IMSBackend.Supplier.SupplierDao;
 import com.exe.escobar.IMSBackend.Supply.Exceptions.SupplyNotFoundException;
 import com.exe.escobar.IMSBackend.Supply.Supply;
 import com.exe.escobar.IMSBackend.Supply.SupplyDao;
+import com.exe.escobar.IMSBackend.Transaction.Exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,8 @@ public class TransactionService {
                 transaction.getSupply().getSupplyName(),
                 transaction.getSupply().getUnitOfMeasurement().getUnitOfMeasurementAbbreviation(),
                 transaction.getPricePerUnit(),
-                transaction.getExpiryDate()
+                transaction.getExpiryDate(),
+                transaction.getTransactionType()
         );
     }
 
@@ -71,7 +73,7 @@ public class TransactionService {
 
         switch(sortedBy){
             case "Transact By":
-                return Sort.by("employee.last_name");
+                return Sort.by("employee.employee_last_name");
 
             case "Transaction Date":
                 return Sort.by("transaction_date");
@@ -153,6 +155,27 @@ public class TransactionService {
         Double quantity = transactionDto.getSupplyQuantity();
         Double pricePerUnit = transactionDto.getPricePerUnit();
         LocalDateTime expiryDate = transactionDto.getExpiryDate();
+        TransactionType transactionType = transactionDto.getTransactionType();
+
+        if (transactionDate == null){
+            throw new TransactionDateIsNullException();
+        }
+
+        if (pricePerUnit == null){
+            throw new PricePerUnitIsNullException();
+        }
+
+        if (quantity == null){
+            throw new QuantityIsNullException();
+        }
+
+        if (quantity < 1){
+            throw new QuantityIsLessThanOneException();
+        }
+
+        if (pricePerUnit < 1){
+            throw new PricePerUnitIsLessThanZeroException();
+        }
 
         Employee transactBy = employeeRepository
                 .getEmployeeByFirstAndLastName(transactByFirstName, transactByLastName)
@@ -175,7 +198,58 @@ public class TransactionService {
                 quantity,
                 supply.getSupplyId(),
                 pricePerUnit,
-                expiryDate);
+                expiryDate,
+                transactionType.toString());
+    }
+
+    public void stockOutTransaction(TransactionDto transactionDto){
+        String[] transactionSplit  = transactionDto.getTransactByName().split(", ");
+        String transactByLastName = transactionSplit[0];
+        String transactByFirstName = transactionSplit[1];
+        LocalDateTime transactionDate = transactionDto.getTransactionDate();
+        Double quantity = transactionDto.getSupplyQuantity();
+        Double pricePerUnit = transactionDto.getPricePerUnit();
+        LocalDateTime expiryDate = transactionDto.getExpiryDate();
+        TransactionType transactionType = transactionDto.getTransactionType();
+
+        Employee transactBy = employeeRepository
+                .getEmployeeByFirstAndLastName(transactByFirstName, transactByLastName)
+                .orElseThrow(() -> new EmployeeNotFoundException(transactByFirstName, transactByLastName));
+
+        Supplier supplier = supplierRepository
+                .getSupplierByName(transactionDto.getSupplierName())
+                .orElseThrow(()-> new SupplierNotFoundException(transactionDto.getSupplierName()));
+
+        Supply supply = supplyRepository
+                .getSupplyByName(transactionDto.getSupplyName())
+                .orElseThrow(() -> new SupplyNotFoundException(transactionDto.getSupplyName()));
+
+        if (quantity == null){
+            throw new QuantityIsNullException();
+        }
+
+        if (quantity < 1){
+            throw new QuantityIsLessThanOneException();
+        }
+
+        Double newQuantity = supply.getSupplyQuantity() - quantity;
+
+        if (newQuantity < 0){
+            throw new SupplyQuantityIsLessThanZeroException();
+        }
+
+        supply.setSupplyQuantity(newQuantity);
+
+        transactionRepository.insertTransaction(
+                transactBy.getEmployeeId(),
+                transactionDate,
+                supplier.getSupplierId(),
+                quantity,
+                supply.getSupplyId(),
+                pricePerUnit,
+                expiryDate,
+                transactionType.toString());
+
     }
 
 

@@ -52,7 +52,7 @@ public class SupplyService {
                 supply.getMinimumQuantity(),
                 supply.getInMinimumQuantity(),
                 supply.getSupplier().getSupplierName(),
-                supply.getUnitOfMeasurement().getUnitOfMeasurementName(),
+                supply.getUnitOfMeasurement().getUnitOfMeasurementAbbreviation(),
                 supply.getSupplyCategory().getSupplyCategoryName(),
                 supply.getIsActive()
         );
@@ -62,6 +62,14 @@ public class SupplyService {
         return new SupplyDtoV2(
                 supply.getSupplyName(),
                 supply.getUnitOfMeasurement().getUnitOfMeasurementAbbreviation()
+        );
+    }
+
+    private SupplyDtoV3 convertEntityToDtoV3(Supply supply){
+        return new SupplyDtoV3(
+                supply.getSupplyName(),
+                supply.getUnitOfMeasurement().getUnitOfMeasurementAbbreviation(),
+                supply.getSupplier().getSupplierName()
         );
     }
 
@@ -159,6 +167,14 @@ public class SupplyService {
                 .getAllActiveSuppliesList()
                 .stream()
                 .map((Supply supply)-> convertEntityToDtoV2(supply))
+                .collect(Collectors.toList());
+    }
+
+    public List<SupplyDtoV3> getAllActiveSuppliesWithSuppliersWithoutPagination(){
+        return supplyRepository
+                .getAllActiveSuppliesList()
+                .stream()
+                .map((Supply supply)-> convertEntityToDtoV3(supply))
                 .collect(Collectors.toList());
     }
 

@@ -81,10 +81,10 @@ CREATE TABLE IF NOT EXISTS account(
     account_id BIGINT NOT NULL AUTO_INCREMENT,
     account_username VARCHAR(255) NOT NULL,
     account_password VARCHAR(255) NOT NULL,
-    accessible_systems_id BIGINT,
+--    accessible_systems_id BIGINT,
     employee_id BIGINT,
     PRIMARY KEY (account_id),
-    FOREIGN KEY (accessible_systems_id) REFERENCES accessible_systems(accessible_systems_id),
+--    FOREIGN KEY (accessible_systems_id) REFERENCES accessible_systems(accessible_systems_id),
     FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
@@ -144,6 +144,7 @@ CREATE TABLE IF NOT EXISTS transaction(
     supply_id BIGINT,
     price_per_unit DECIMAL(10, 5),
     expiry_date DATETIME,
+    transaction_type VARCHAR(255),
     PRIMARY KEY (transaction_id),
     FOREIGN KEY (supply_id) REFERENCES supply(supply_id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (supplier_id) REFERENCES supplier(supplier_id) ON DELETE CASCADE ON UPDATE CASCADE,

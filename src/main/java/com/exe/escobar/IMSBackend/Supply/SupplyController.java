@@ -20,6 +20,11 @@ public class SupplyController {
         return supplyService.getAllActiveSuppliesWithoutPagination();
     }
 
+    @GetMapping("/with-suppliers")
+    public List<SupplyDtoV3> getAllSuppliesWithSuppliers(){
+        return supplyService.getAllActiveSuppliesWithSuppliersWithoutPagination();
+    }
+
     @PostMapping
     public Map<String, Object> getAllSupplies(@RequestBody PaginationDto paginationDto){
         return supplyService.getAllSupplies(paginationDto);
