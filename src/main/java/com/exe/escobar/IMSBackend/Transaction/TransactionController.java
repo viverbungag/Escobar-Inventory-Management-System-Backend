@@ -1,6 +1,5 @@
 package com.exe.escobar.IMSBackend.Transaction;
 
-import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +27,10 @@ public class TransactionController {
     @PostMapping("/stock-out")
     public void stockOutTransaction(@RequestBody TransactionDto transactionDto){
         transactionService.stockOutTransaction(transactionDto);
+    }
+
+    @PostMapping("/print")
+    public void printTransaction(@RequestBody TransactionPrintDetailsDto transactionPrintDetailsDto){
+        transactionService.printTransaction(transactionPrintDetailsDto);
     }
 }

@@ -4,6 +4,7 @@ import com.exe.escobar.IMSBackend.Employee.Employee;
 import com.exe.escobar.IMSBackend.Employee.EmployeeDao;
 import com.exe.escobar.IMSBackend.Employee.Exceptions.EmployeeNotFoundException;
 import com.exe.escobar.IMSBackend.Pagination.PaginationDto;
+import com.exe.escobar.IMSBackend.Print.PrintTransactionReport;
 import com.exe.escobar.IMSBackend.Supplier.Exceptions.SupplierNotFoundException;
 import com.exe.escobar.IMSBackend.Supplier.Supplier;
 import com.exe.escobar.IMSBackend.Supplier.SupplierDao;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +47,9 @@ public class TransactionService {
     @Autowired
     @Qualifier("employee_mysql")
     EmployeeDao employeeRepository;
+
+    @Autowired
+    PrintTransactionReport printTransactionReport;
 
 
     private TransactionDto convertEntityToDto(Transaction transaction){
@@ -261,6 +266,9 @@ public class TransactionService {
 
     }
 
+    public void printTransaction(TransactionPrintDetailsDto transactionPrintDetailsDto){
 
+        printTransactionReport.print(transactionPrintDetailsDto.getTransactions(), transactionPrintDetailsDto.getAccountFullName());
+    }
 
 }
