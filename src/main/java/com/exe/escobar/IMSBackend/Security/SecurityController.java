@@ -13,7 +13,7 @@ public class SecurityController {
     SecurityService securityService;
 
     @PostMapping
-    public void login(@RequestBody AccountLoginDto accountLoginDto){
-        securityService.login(accountLoginDto);
+    public AccountLoginDto login(@RequestBody AccountLoginDto accountLoginDto){
+        return securityService.login(accountLoginDto);
     }
 }

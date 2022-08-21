@@ -20,6 +20,11 @@ public class SupplyController {
         return supplyService.getAllActiveSuppliesWithoutPagination();
     }
 
+    @GetMapping("/names")
+    public List<String> getAllSupplyNames(){
+        return supplyService.getAllSupplyNames();
+    }
+
     @GetMapping("/with-suppliers")
     public List<SupplyDtoV3> getAllSuppliesWithSuppliers(){
         return supplyService.getAllActiveSuppliesWithSuppliersWithoutPagination();
@@ -33,6 +38,11 @@ public class SupplyController {
     @PostMapping("/active")
     public Map<String, Object> getAllActiveSupplies(@RequestBody PaginationDto paginationDto){
         return supplyService.getAllActiveSupplies(paginationDto);
+    }
+
+    @PostMapping("/active/in-minimum")
+    public Map<String, Object> getAllActiveInMinimumSupplies(@RequestBody PaginationDto paginationDto){
+        return supplyService.getAllActiveInMinimumSupplies(paginationDto);
     }
 
     @PostMapping("/inactive")

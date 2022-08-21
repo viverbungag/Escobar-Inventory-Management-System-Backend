@@ -1,4 +1,4 @@
-package com.exe.escobar.IMSBackend.RestServiceCors;
+package com.exe.escobar.IMSBackend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

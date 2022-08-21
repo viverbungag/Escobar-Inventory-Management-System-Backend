@@ -36,9 +36,6 @@ public class Supply {
     @Column(name = "minimum_quantity")
     private Double minimumQuantity;
 
-    @Transient
-    private Boolean inMinimumQuantity;
-
     @NonNull
     @ManyToOne
     @JoinColumn(name = "supplier_id")

@@ -15,6 +15,8 @@ public interface SupplyDao {
 
     Page<Supply> getAllPagedSupplies(Pageable pageable);
 
+    List<Supply> getAllPagedSupplies();
+
     Optional<Supply> getSupplyById(Long supplyId);
 
     Optional<Supply> getSupplyByName(String supplyName);
@@ -36,4 +38,6 @@ public interface SupplyDao {
     void activateSupply(List<String> supplyNames);
 
     List<Supply> getAllActiveSuppliesList();
+
+    Page<Supply> getAllActiveInMinimumPagedSupplies(Pageable pageable);
 }

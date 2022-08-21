@@ -153,6 +153,13 @@ public class SupplyService {
         return supplyWithPageDetails;
     }
 
+    public List<String> getAllSupplyNames (){
+        return supplyRepository.getAllPagedSupplies()
+                .stream()
+                .map((supply)-> supply.getSupplyName())
+                .collect(Collectors.toList());
+    }
+
     public Map<String, Object> getAllSupplies(PaginationDto paginationDto) {
         Pageable pageable = initializePageable(paginationDto);
         Page<Supply> supplyPage = supplyRepository
@@ -191,6 +198,15 @@ public class SupplyService {
         Pageable pageable = initializePageable(paginationDto);
         Page<Supply> supplyPage = supplyRepository
                 .getAllInactivePagedSupplies(pageable);
+
+
+        return initializeSupplyWithPageDetails(supplyPage, paginationDto);
+    }
+
+    public Map<String, Object> getAllActiveInMinimumSupplies(PaginationDto paginationDto) {
+        Pageable pageable = initializePageable(paginationDto);
+        Page<Supply> supplyPage = supplyRepository
+                .getAllActiveInMinimumPagedSupplies(pageable);
 
 
         return initializeSupplyWithPageDetails(supplyPage, paginationDto);

@@ -10,4 +10,5 @@ public class AccountLoginDto {
 
     private String accountUsername;
     private String accountPassword;
+    private String employeeName;
 }

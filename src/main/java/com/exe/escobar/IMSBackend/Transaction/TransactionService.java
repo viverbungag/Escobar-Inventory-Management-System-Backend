@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class TransactionService {
 
     @Autowired
-    @Qualifier("transaction_mysql")
+    @Qualifier("transaction_jdbc_mysql")
     TransactionDao transactionRepository;
 
     @Autowired
@@ -112,7 +112,7 @@ public class TransactionService {
         return pageable;
     }
 
-    private Map<String, Object> initializeSupplyWithPageDetails(Page<Transaction> transactionPage, PaginationDto paginationDto){
+    private Map<String, Object> initializeTransactionWithPageDetails(Page<Transaction> transactionPage, PaginationDto paginationDto){
         Integer pageNo = paginationDto.getPageNo();
         Integer totalPages = transactionPage.getTotalPages();
         Long totalCount = transactionPage.getTotalElements();
@@ -139,12 +139,21 @@ public class TransactionService {
         return transactionWithPageDetails;
     }
 
-    public Map<String, Object> getAllPagedTransactions(PaginationDto paginationDto){
+    public Map<String, Object> getAllPagedTransactions(TransactionFiltersPaginationDto transactionFiltersPaginationDto){
+
+        PaginationDto paginationDto = new PaginationDto(transactionFiltersPaginationDto.getPageNo(),
+                transactionFiltersPaginationDto.getPageSize(),
+                transactionFiltersPaginationDto.getSortedBy(),
+                transactionFiltersPaginationDto.getIsAscending());
+
+
+
         Pageable pageable = initializePageable(paginationDto);
         Page<Transaction> transactionPage = transactionRepository
-                .getAllPagedTransactions(pageable);
+                .getAllPagedTransactions(pageable, transactionFiltersPaginationDto);
+//        Page<Transaction> transactionPage = null;
 
-        return initializeSupplyWithPageDetails(transactionPage, paginationDto);
+        return initializeTransactionWithPageDetails(transactionPage, paginationDto);
     }
 
     public void stockInTransaction(TransactionDto transactionDto){

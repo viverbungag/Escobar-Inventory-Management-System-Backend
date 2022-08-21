@@ -9,16 +9,18 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository("transaction_mysql")
-public interface TransactionMySqlRepository extends TransactionDao, JpaRepository<Transaction, Long> {
+public interface TransactionMySqlRepository extends JpaRepository<Transaction, Long> {
 
-    @Query(value = "SELECT * FROM #{#entityName} AS transaction" +
-            " INNER JOIN supplier AS supplier ON transaction.supplier_id = supplier.supplier_id" +
-            " INNER JOIN supply AS supply ON transaction.supply_id = supply.supply_id" +
-            " INNER JOIN employee AS employee ON transaction.transact_by = employee.employee_id",
-            nativeQuery = true)
-    Page<Transaction> getAllPagedTransactions(Pageable pageable);
+//    @Query(value = "SELECT * FROM #{#entityName} AS transaction" +
+//            " INNER JOIN supplier AS supplier ON transaction.supplier_id = supplier.supplier_id" +
+//            " INNER JOIN supply AS supply ON transaction.supply_id = supply.supply_id" +
+//            " INNER JOIN employee AS employee ON transaction.transact_by = employee.employee_id" +
+//            " WHERE supply.supply_name IN :supplyFilter",
+//            nativeQuery = true)
+//    Page<Transaction> getAllPagedTransactions(Pageable pageable, TransactionFiltersPaginationDto transactionFiltersPaginationDto);
 
     @Modifying
     @Query(value = "INSERT INTO #{#entityName} " +

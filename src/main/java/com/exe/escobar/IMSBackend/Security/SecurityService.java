@@ -18,15 +18,18 @@ public class SecurityService {
     private AccountLoginDto convertEntityToDto(Account account){
         return new AccountLoginDto(
                 account.getAccountUsername(),
-                account.getAccountPassword()
+                account.getAccountPassword(),
+                String.format("%s, %s",account.getEmployee().getLastName(), account.getEmployee().getFirstName())
         );
     }
 
-    public void login (AccountLoginDto accountLoginDto){
+    public AccountLoginDto login (AccountLoginDto accountLoginDto){
 
         Account account = securityRepository
                 .findUserByNameAndPassword(accountLoginDto.getAccountUsername(), accountLoginDto.getAccountPassword())
                 .orElseThrow(() -> new UserDoesNotExistException());
+
+        return convertEntityToDto(account);
 
     }
 }

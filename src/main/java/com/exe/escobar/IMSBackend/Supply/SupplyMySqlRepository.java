@@ -25,6 +25,14 @@ public interface SupplyMySqlRepository extends SupplyDao, JpaRepository<Supply, 
     @Query(value = "SELECT * FROM #{#entityName} AS supply" +
             " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
             " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
+            " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName}",
+            nativeQuery = true)
+    List<Supply> getAllPagedSupplies();
+
+    @Query(value = "SELECT * FROM #{#entityName} AS supply" +
+            " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
+            " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
             " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id WHERE supply.is_active=true",
             countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true",
             nativeQuery = true)
@@ -42,9 +50,18 @@ public interface SupplyMySqlRepository extends SupplyDao, JpaRepository<Supply, 
             " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
             " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
             " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id WHERE supply.is_active=false",
-            countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=false",
             nativeQuery = true)
     Page<Supply> getAllInactivePagedSupplies(Pageable pageable);
+
+    @Query(value = "SELECT * FROM #{#entityName} AS supply" +
+            " INNER JOIN supplier AS supplier ON supply.supplier_id = supplier.supplier_id" +
+            " INNER JOIN unit_of_measurement AS unit_of_measurement ON supply.unit_of_measurement_id = unit_of_measurement.unit_of_measurement_id" +
+            " INNER JOIN supply_category AS supply_category ON supply.supply_category_id = supply_category.supply_category_id" +
+            " WHERE supply.is_active = true AND supply.supply_quantity <= supply.minimum_quantity",
+            countQuery = "SELECT COUNT(*) FROM #{#entityName} WHERE supply.is_active=true AND supply.supply_quantity <= supply.minimum_quantity",
+            nativeQuery = true)
+    Page<Supply> getAllActiveInMinimumPagedSupplies(Pageable pageable);
 
     @Modifying
     @Query(value = "UPDATE #{#entityName} SET is_active=false WHERE supply_name IN :supplyNames",

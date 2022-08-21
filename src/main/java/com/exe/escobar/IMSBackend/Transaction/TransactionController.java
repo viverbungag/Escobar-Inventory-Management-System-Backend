@@ -16,8 +16,8 @@ public class TransactionController {
 
 
     @PostMapping
-    public Map<String, Object> getAllTransactions(@RequestBody PaginationDto paginationDto){
-        return transactionService.getAllPagedTransactions(paginationDto);
+    public Map<String, Object> getAllTransactions(@RequestBody TransactionFiltersPaginationDto transactionFiltersPaginationDto){
+        return transactionService.getAllPagedTransactions(transactionFiltersPaginationDto);
     }
 
     @PostMapping("/stock-in")
