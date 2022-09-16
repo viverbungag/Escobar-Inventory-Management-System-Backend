@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS monthly_report CASCADE;
 DROP TABLE IF EXISTS monthly_sales CASCADE;
 DROP TABLE IF EXISTS daily_sales CASCADE;
@@ -6,7 +7,8 @@ DROP TABLE IF EXISTS monthly_income_expenses CASCADE;
 DROP TABLE iF EXISTS monthly_transactions CASCADE;
 DROP TABLE IF EXISTS monthly_utility CASCADE;
 DROP TABLE IF EXISTS utility CASCADE;
-DROP TABLE IF EXISTS serving CASCADE;
+DROP TABLE IF EXISTS customer_food_order CASCADE;
+DROP TABLE IF EXISTS customer_order CASCADE;
 DROP TABLE IF EXISTS food_order CASCADE;
 DROP TABLE IF EXISTS customer CASCADE;
 DROP TABLE IF EXISTS menu_ingredients CASCADE;
@@ -21,21 +23,32 @@ DROP TABLE IF EXISTS account CASCADE;
 DROP TABLE IF EXISTS accessible_systems CASCADE;
 DROP TABLE IF EXISTS employee CASCADE;
 DROP TABLE IF EXISTS employee_income_per_month CASCADE;
+DROP TABLE IF EXISTS employee_attendance_join CASCADE;
 DROP TABLE IF EXISTS employee_attendance CASCADE;
 DROP TABLE IF EXISTS employee_position CASCADE;
+DROP TABLE IF EXISTS employee_type CASCADE;
+SET FOREIGN_KEY_CHECKS = 1;
 
 
 CREATE TABLE IF NOT EXISTS employee_position(
-    position_id BIGINT NOT NULL AUTO_INCREMENT,
-    position_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (position_id)
+    employee_position_id BIGINT NOT NULL AUTO_INCREMENT,
+    employee_position_name VARCHAR(255) NOT NULL,
+    is_active BOOLEAN DEFAULT true,
+    PRIMARY KEY (employee_position_id)
+);
+
+CREATE TABLE IF NOT EXISTS employee_type(
+    employee_type_id BIGINT NOT NULL AUTO_INCREMENT,
+    employee_type_name VARCHAR(255) NOT NULL,
+    is_active BOOLEAN DEFAULT true,
+    PRIMARY KEY (employee_type_id)
 );
 
 CREATE TABLE IF NOT EXISTS employee_attendance(
-    attendance_id BIGINT NOT NULL AUTO_INCREMENT,
-    check_in DATETIME,
-    check_out DATETIME,
-    PRIMARY KEY (attendance_id)
+    employee_attendance_id BIGINT NOT NULL AUTO_INCREMENT,
+    attendance_time DATETIME,
+    attendance_type VARCHAR(255),
+    PRIMARY KEY (employee_attendance_id)
 );
 
 CREATE TABLE IF NOT EXISTS employee_income_per_month(
@@ -52,19 +65,31 @@ CREATE TABLE IF NOT EXISTS employee(
     employee_id BIGINT NOT NULL AUTO_INCREMENT,
     employee_first_name VARCHAR(255) NOT NULL,
     employee_last_name VARCHAR(255) NOT NULL,
---    employee_address VARCHAR(255),
---    employee_contact_number INTEGER,
---    date_employed DATE,
+    employee_address VARCHAR(255),
+    employee_contact_number VARCHAR(255),
+    date_employed DATE,
 --    monthly_wage DECIMAL(10, 2),
 --    attendance_per_month_id BIGINT,
 --    income_id BIGINT,
---    position_id BIGINT,
---    supperior_employee_id BIGINT,
-    PRIMARY KEY (employee_id)
+    employee_position_id BIGINT,
+    employee_type_id BIGINT,
+    superior_employee_id BIGINT NULL,
+    is_active BOOLEAN DEFAULT true,
+    PRIMARY KEY (employee_id),
 --    FOREIGN KEY (attendance_per_month_id) REFERENCES employee_attendance(attendance_id),
 --    FOREIGN KEY (income_id) REFERENCES employee_income_per_month(income_id),
---    FOREIGN KEY (position_id) REFERENCES employee_position(position_id),
---    CONSTRAINT emp_supperior FOREIGN KEY (supperior_employee_id) REFERENCES employee(employee_id)
+    FOREIGN KEY (employee_position_id) REFERENCES employee_position(employee_position_id),
+    FOREIGN KEY (employee_type_id) REFERENCES employee_type(employee_type_id),
+    CONSTRAINT emp_superior FOREIGN KEY (superior_employee_id) REFERENCES employee(employee_id)
+);
+
+CREATE TABLE IF NOT EXISTS employee_attendance_join(
+    employee_attendance_join_id BIGINT NOT NULL AUTO_INCREMENT,
+    employee_id BIGINT,
+    employee_attendance_id BIGINT,
+    PRIMARY KEY (employee_attendance_join_id),
+    FOREIGN KEY (employee_attendance_id) REFERENCES employee_attendance(employee_attendance_id),
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
 );
 
 CREATE TABLE IF NOT EXISTS accessible_systems(
@@ -171,32 +196,31 @@ CREATE TABLE IF NOT EXISTS menu_ingredients(
     FOREIGN KEY (supply_id) REFERENCES supply(supply_id)
 );
 
-CREATE TABLE IF NOT EXISTS customer(
-    customer_id BIGINT NOT NULL AUTO_INCREMENT,
-    payment DECIMAL(10, 2),
-    change_from_payment DECIMAL(10,2),
-    PRIMARY KEY (customer_id)
-);
-
 CREATE TABLE IF NOT EXISTS food_order(
     food_order_id BIGINT NOT NULL AUTO_INCREMENT,
     menu_id BIGINT,
-    order_quantity INTEGER,
+    menu_quantity INTEGER,
     PRIMARY KEY (food_order_id),
     FOREIGN KEY (menu_id) REFERENCES menu(menu_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS serving(
-    serving_id BIGINT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS customer_order(
+    order_id BIGINT NOT NULL AUTO_INCREMENT,
     employee_id BIGINT,
-    servingTime DATETIME,
-    food_order_id BIGINT,
-    customer_id BIGINT,
+    order_time DATETIME,
+    payment DECIMAL(10, 2),
     total_cost DECIMAL(10, 2),
-    PRIMARY KEY (serving_id),
-    FOREIGN KEY (employee_id) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (order_id),
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS customer_food_order(
+    customer_food_order_id BIGINT NOT NULL AUTO_INCREMENT,
+    food_order_id BIGINT,
+    order_id BIGINT,
+    PRIMARY KEY (customer_food_order_id),
     FOREIGN KEY (food_order_id) REFERENCES food_order(food_order_id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (order_id) REFERENCES customer_order(order_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS utility(
@@ -248,9 +272,9 @@ CREATE TABLE IF NOT EXISTS daily_sales(
     daily_sales_id BIGINT NOT NULL AUTO_INCREMENT,
     sales_date DATE,
     daily_sales_earned DECIMAL(10, 2),
-    serving_id BIGINT,
+    order_id BIGINT,
     PRIMARY KEY (daily_sales_id),
-    FOREIGN KEY (serving_id) REFERENCES serving(serving_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (order_id) REFERENCES customer_order(order_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS monthly_sales(

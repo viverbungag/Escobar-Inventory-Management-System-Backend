@@ -36,3 +36,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+	archivesBaseName = 'IMS'
+	archiveVersion = ''
+}

@@ -151,7 +151,7 @@ public class TransactionJdbcMySqlRepository implements TransactionDao{
                             .stream()
                             .map((item) -> String.format("\"%s\"", item))
                             .collect(Collectors.toList()));
-            queryList.add(String.format("unit_of_measurement.unit_of_measurement_abbreviation IN (%s)", unitOfMeasurements));
+            queryList.add(String.format("unit_of_measurement.unit_of_measurement_name IN (%s)", unitOfMeasurements));
         }
 
         if (supplierFilter.size() > 0){
